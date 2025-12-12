@@ -1,0 +1,36 @@
+// Add any additional repositories for your dependencies here.
+
+repositories {
+	maven {
+		name = 'ModMaven'
+		url = 'https://modmaven.dev'
+	}
+	maven {
+		name = "gt"
+		url = "https://gregtech.mechaenetia.com/"
+	}
+	maven {
+		name = "CurseForge"
+		url = "https://minecraft.curseforge.com/api/maven/"
+	}
+	maven {
+		name = "Jitpack"
+		url = "https://jitpack.io"
+	}
+	maven {
+		name = "CurseMaven"
+		url = "https://cursemaven.com"
+	}
+	maven {
+		name 'MM repo'
+		url 'https://maven.k-4u.nl/'
+	}
+	maven {
+		name 'OpenComputers Repo'
+		url 'https://maven.cil.li/'
+		metadataSources {
+			mavenPom()
+			artifact()
+		}
+	}
+}
