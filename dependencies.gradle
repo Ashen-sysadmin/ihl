@@ -34,5 +34,15 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
+	runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.6.34-GTNH:dev")
+	implementation 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev'
+	compileOnly 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:src'
+	implementation 'net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev'
+	implementation 'codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev'
+	compileOnly 'codechicken:CodeChickenLib:1.7.10-1.1.3.140:src'
 
+	implementation 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:dev'
+	compileOnly 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:src'
+
+	implementation 'com.gregoriust.gregtech:gregtech_1.7.10:6.17.05:dev'
 }
