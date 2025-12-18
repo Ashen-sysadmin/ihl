@@ -1,12 +1,12 @@
 package ihl.model;
-/*  This code with minimal changes was 
- *  taken by me (Foghrye4) from 
+/*  This code with minimal changes was
+ *  taken by me (Foghrye4) from
  *  RailCraft GitHub.
  */
 
-/* 
+/*
  * Copyright (c) CovertJaguar, 2014 http://railcraft.info
- * 
+ *
  * This code is the property of CovertJaguar
  * and may only be used with explicit written
  * permission unless otherwise specified on the
@@ -34,6 +34,7 @@ import net.minecraftforge.fluids.FluidStack;
  *
  * @author CovertJaguar <http://www.railcraft.info>
  */
+@Deprecated
 @SideOnly(value=Side.CLIENT)
 public class FluidRenderer {
 
