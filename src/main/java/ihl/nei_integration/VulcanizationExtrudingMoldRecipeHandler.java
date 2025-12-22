@@ -2,7 +2,7 @@ package ihl.nei_integration;
 
 import java.util.Map;
 
-import ihl.processing.metallurgy.VulcanizationExtrudingMoldTileEntity;
+import ihl.tile_entity.machines.VulcanizationExtrudingMoldTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -15,7 +15,7 @@ public class VulcanizationExtrudingMoldRecipeHandler extends MachineRecipeHandle
     {
         return null;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {

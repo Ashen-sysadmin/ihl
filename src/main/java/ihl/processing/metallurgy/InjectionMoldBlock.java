@@ -11,6 +11,7 @@ import ihl.IHLCreativeTab;
 import ihl.IHLModInfo;
 import ihl.items_blocks.IHLItemBlock;
 import ihl.metallurgy.constants.Details;
+import ihl.tile_entity.machines.InjectionMoldTileEntity;
 import ihl.utils.IHLUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -29,13 +30,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public class InjectionMoldBlock extends Block implements ITileEntityProvider{
-	
+
 	IIcon textureSide;
-	
+
 	public static InjectionMoldBlock instance;
 	public static String[] materials = new String[] {"Bronze","Steel","Gold","Magnesium", "Lithium", "TarPitch", "Potassium", "Sodium"};
 
-	public InjectionMoldBlock() 
+	public InjectionMoldBlock()
 	{
 		super(Material.rock);
         this.setResistance(0.5F);
@@ -44,7 +45,7 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 		this.setCreativeTab(IHLCreativeTab.tab);
 		instance=this;
 	}
-	
+
 	public static void init()
 	{
 		GameRegistry.registerBlock(new InjectionMoldBlock(),IHLItemBlock.class,"injectionMold");
@@ -56,11 +57,11 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 	{
 		super.dropBlockAsItemWithChance(world, x, y, z, meta, chance, flag);
 	}
-	
+
 
  	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs par2CreativeTabs, List itemList) 
+	public void getSubBlocks(Item item, CreativeTabs par2CreativeTabs, List itemList)
 	{
     	ItemStack result = new ItemStack(item);
     	result.stackTagCompound=new NBTTagCompound();
@@ -68,12 +69,12 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 		itemList.add(result);
 	}
 
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int var2) {
 		return new InjectionMoldTileEntity();
 	}
-	
+
 	@Override
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta)
 	{
@@ -88,9 +89,9 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 		}
 		super.onBlockPreDestroy(world, x, y, z, meta);
 	}
-	
+
 	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) 
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
         TileEntity t = world.getTileEntity(x, y, z);
@@ -102,7 +103,7 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
         }
         return drops;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
@@ -110,13 +111,13 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
    		this.blockIcon = par1IconRegister.registerIcon(IHLModInfo.MODID + ":injectionMoldTop");
    		this.textureSide = par1IconRegister.registerIcon(IHLModInfo.MODID + ":injectionMoldSide");
 	}
-   	
+
 	@Override
 	public boolean hasTileEntity(int metadata)
 	{
 	    return true;
 	}
-	
+
 	@Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
     {
@@ -140,7 +141,7 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 	public boolean onBlockActivated(World world,int x,int y,int z,EntityPlayer player,int i,float pos_x,float pos_y,float pos_z)
 	{
 		if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof Crucible)
-		{		
+		{
 			if(!world.isRemote)
 			{
 				return ((Crucible)player.getCurrentEquippedItem().getItem()).onItemUse(player.getCurrentEquippedItem(), player, world, x, y, z, 0, pos_x, pos_y, pos_z);
@@ -150,14 +151,14 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 		return false;
 	}
 
-		
-	
+
+
    /**
      * Called when the block is placed in the world.
      */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) 
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		switch (side)
 		{
@@ -177,10 +178,10 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 			return this.textureSide;
 		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int meta) 
+	public IIcon getIcon(int side, int meta)
 	{
 		switch (side)
 		{
@@ -200,7 +201,7 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
 			return this.textureSide;
 		}
 	}
-	
+
 	public ItemStack getSandInjectionMoldForResult(String result1)
 	{
 		ItemStack stack = new ItemStack(this);
@@ -209,7 +210,7 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
     	registerRecipes(result1, stack);
     	return stack;
 	}
-	
+
 	public ItemStack getGypsumInjectionMoldForResult(String result1)
 	{
 		ItemStack stack = new ItemStack(this);
@@ -220,7 +221,7 @@ public class InjectionMoldBlock extends Block implements ITileEntityProvider{
     	registerRecipes(result1, stack);
     	return stack;
 	}
-	
+
 	public static void registerRecipes(String result1,ItemStack stack1)
 	{
 		for(int i=0;i<materials.length;i++)

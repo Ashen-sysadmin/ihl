@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.util.Map;
 
 import codechicken.lib.gui.GuiDraw;
-import ihl.processing.metallurgy.ImpregnatingMachineGui;
-import ihl.processing.metallurgy.ImpregnatingMachineTileEntity;
+import ihl.gui.ImpregnatingMachineGui;
+import ihl.tile_entity.machines.ImpregnatingMachineTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,7 +18,7 @@ public class ImpregnatingMachineRecipeHandler extends MachineRecipeHandler
     {
         return ImpregnatingMachineGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -30,7 +30,7 @@ public class ImpregnatingMachineRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{16-11};
     }
-    
+
     @Override
     protected int[] getFluidInputPosX()
     {
@@ -54,7 +54,7 @@ public class ImpregnatingMachineRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{41-11,59-11};
     }
-    
+
     @Override
     protected int[] getFluidOutputPosX()
     {
@@ -84,13 +84,13 @@ public class ImpregnatingMachineRecipeHandler extends MachineRecipeHandler
     {
         return "impregnatingMachine";
     }
-    
+
     @Override
     public void loadTransferRects()
     {
         this.transferRects.add(new RecipeTransferRect(new Rectangle(134-5, 0, 35, 65), this.getRecipeId(), new Object[0]));
     }
-    
+
     @Override
     public void drawBackground(int i)
     {

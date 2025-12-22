@@ -84,7 +84,7 @@ public class FlexibleCableItem extends Item implements IWire {
 			z += direction.offsetZ;
 			t = world.getTileEntity(x, y, z);
 			if (IHLUtils.isBlockCanBeReplaced(world, x, y, z)) {
-				world.setBlock(x, y, z, IHLMod.cableAnchorBlock);
+				world.setBlock(x, y, z, BlocksAndItems.cableAnchorBlock);
 			} else if (!(t instanceof AnchorTileEntity)) {
 				return false;
 			}
@@ -363,7 +363,7 @@ public class FlexibleCableItem extends Item implements IWire {
 		}
 		return 0xFFFFFF;
 	}
-	
+
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean flag) {

@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ihl.IHLCreativeTab;
 import ihl.IHLModInfo;
+import ihl.tile_entity.machines.ElectricEvaporatorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -22,10 +23,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ElectricEvaporatorBlock extends Block implements ITileEntityProvider{
-	
+
 		IIcon textureFrontActive, textureSide, textureBottom, textureTop;
-	
-		public ElectricEvaporatorBlock(Material material) 
+
+		public ElectricEvaporatorBlock(Material material)
 		{
 			super(material);
 	        this.setCreativeTab(IHLCreativeTab.tab);
@@ -36,19 +37,19 @@ public class ElectricEvaporatorBlock extends Block implements ITileEntityProvide
 	    {
 	        return new ItemStack(Blocks.furnace,1).getItem();
 	    }
-		
+
 		@Override
 		public void	dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float chance, int flag)
 		{
 			ItemStack result = new ItemStack(Blocks.furnace,1);
 	        this.dropBlockAsItem(world, x, y, z, result);
 		}
-		
+
 		@Override
 		public TileEntity createNewTileEntity(World world, int var2) {
 			return new ElectricEvaporatorTileEntity();
 		}
-		
+
 		@Override
 		@SideOnly(Side.CLIENT)
 		public void registerBlockIcons(IIconRegister par1IconRegister)
@@ -59,13 +60,13 @@ public class ElectricEvaporatorBlock extends Block implements ITileEntityProvide
 	   		this.textureTop = par1IconRegister.registerIcon(IHLModInfo.MODID + ":electricEvaporatorTop");
 	   		this.textureBottom = par1IconRegister.registerIcon(IHLModInfo.MODID + ":electricEvaporatorBottom");
 		}
-	   	
+
 		@Override
 		public boolean hasTileEntity(int metadata)
 		{
 		    return true;
 		}
-		
+
 		@Override
 		public boolean onBlockActivated(World world,int x,int y,int z,EntityPlayer entityPlayer,int i,float pos_x,float pos_y,float pos_z){
 			TileEntity te = world.getTileEntity(x,y,z);
@@ -82,7 +83,7 @@ public class ElectricEvaporatorBlock extends Block implements ITileEntityProvide
 	        	}
 			 return false;
 		}
-		
+
 	    /**
 	     * Called when the block is placed in the world.
 	     */
@@ -136,10 +137,10 @@ public class ElectricEvaporatorBlock extends Block implements ITileEntityProvide
 	        	}
 	        }
 	    }
-		
+
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) 
+		public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 		{
 			IIcon faceIcon=this.blockIcon;
 			int facing=3;
@@ -180,10 +181,10 @@ public class ElectricEvaporatorBlock extends Block implements ITileEntityProvide
 				return this.textureSide;
 			}
 		}
-		
+
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IIcon getIcon(int side, int meta) 
+		public IIcon getIcon(int side, int meta)
 		{
 			switch (side)
 			{
@@ -203,7 +204,7 @@ public class ElectricEvaporatorBlock extends Block implements ITileEntityProvide
 				return this.textureSide;
 			}
 		}
-		
+
 	    @Override
 		public void randomDisplayTick(World world, int x, int y, int z, Random random)
 	    {

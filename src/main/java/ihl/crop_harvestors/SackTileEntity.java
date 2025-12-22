@@ -6,6 +6,7 @@ import java.util.Random;
 import ic2.core.IC2;
 import ic2.core.block.TileEntityInventory;
 import ihl.IHLMod;
+import ihl.items_blocks.BlocksAndItems;
 import ihl.utils.IHLFluidTank;
 import ihl.utils.IHLUtils;
 import net.minecraft.block.Block;
@@ -36,7 +37,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 	public final IHLFluidTank fluidTank = new IHLFluidTank(8000);
     public int visibleFluidId = -1;
     public int visibleFluidAmount = 1;
-   
+
 	public SackTileEntity() {
 		super();
 	}
@@ -51,7 +52,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 		fields.add("currentTree");
 		return fields;
     }
-	
+
     @Override
 	public void readFromNBT(NBTTagCompound nbttagcompound)
     {
@@ -67,28 +68,28 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
         this.fluidTank.writeToNBT(fluidTankTag);
         nbttagcompound.setTag("fluidTank", fluidTankTag);
     }
-    
+
 	@Override
 	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
 		return false;
 	}
-	
+
 	@Override
 	public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
-		return new ItemStack(IHLMod.sackBlock,1);
+		return new ItemStack(BlocksAndItems.sackBlock,1);
 	}
-	
+
     public boolean enableUpdateEntity()
     {
         return true;
     }
 
-    
+
     @Override
 	public void updateEntityClient()
     {
     	super.updateEntityClient();
-    	if(IHLMod.ic2Leaves!=null && IHLMod.ic2Wood!=null)
+    	if(BlocksAndItems.ic2Leaves!=null && BlocksAndItems.ic2Wood!=null)
     	{
 			if(this.blobTimer<=0)
 			{
@@ -140,15 +141,15 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
     			this.updateCounter++;
     		}
     	}
-    	
+
     }
-    
-    
+
+
     @Override
 	public void updateEntityServer()
     {
     	super.updateEntityServer();
-    	if(IHLMod.ic2Leaves!=null && IHLMod.ic2Wood!=null)
+    	if(BlocksAndItems.ic2Leaves!=null && BlocksAndItems.ic2Wood!=null)
     	{
 			if(this.blobTimer<=0)
 			{
@@ -199,7 +200,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
     				{
     					leavesCounter=0F;
     				}
-    				IC2.network.get().updateTileEntityField(this, "currentTree");	   							
+    				IC2.network.get().updateTileEntityField(this, "currentTree");
     				IC2.network.get().updateTileEntityField(this, "leavesCounter");
     				if(this.fluidTank.getFluid()!=null)
     				{
@@ -235,8 +236,8 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 	       	}
     	}
     }
-    
-    private boolean checkCorrectPlacing() 
+
+    private boolean checkCorrectPlacing()
     {
     	int xz[]={0,1,0,-1,0};
     	Block block, block2;
@@ -248,17 +249,17 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
     		block2=worldObj.getBlock(xCoord+xz[i], yCoord+1, zCoord+xz[i+1]);
     		meta2=worldObj.getBlockMetadata(xCoord+xz[i], yCoord+1, zCoord+xz[i+1]);
     		if(
-    			meta>0 && 
-    			meta2>0 && 
-    			(block==IHLMod.ic2Wood||block==IHLMod.rubberTreeBlock) &&
-    			(block2==IHLMod.ic2Wood||block2==IHLMod.rubberTreeBlock)
+    			meta>0 &&
+    			meta2>0 &&
+    			(block==BlocksAndItems.ic2Wood||block==BlocksAndItems.rubberTreeBlock) &&
+    			(block2==BlocksAndItems.ic2Wood||block2==BlocksAndItems.rubberTreeBlock)
     		  )
     		{
     			short newFacing = this.getFacingFromXZ(xz[i], xz[i+1]);
     			this.setFacing(newFacing);
-    			if(block2==IHLMod.ic2Wood)
+    			if(block2==BlocksAndItems.ic2Wood)
     			{
-    				worldObj.setBlock(xCoord+xz[i], yCoord+1, zCoord+xz[i+1],IHLMod.rubberTreeBlock,newFacing,3);
+    				worldObj.setBlock(xCoord+xz[i], yCoord+1, zCoord+xz[i+1],BlocksAndItems.rubberTreeBlock,newFacing,3);
     			}
     			else
     			{
@@ -271,17 +272,17 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
     			return checkGround();
     		}
     		else if(
-    				((block==Blocks.log && meta==1) || 
-    				(block==IHLMod.spruceTreeBlock && meta>0)) &&
-    				((block2==Blocks.log && meta2==1) || 
-    				(block2==IHLMod.spruceTreeBlock && meta2>0))
+    				((block==Blocks.log && meta==1) ||
+    				(block==BlocksAndItems.spruceTreeBlock && meta>0)) &&
+    				((block2==Blocks.log && meta2==1) ||
+    				(block2==BlocksAndItems.spruceTreeBlock && meta2>0))
     				)
     		{
     			short newFacing = this.getFacingFromXZ(xz[i], xz[i+1]);
     			this.setFacing(newFacing);
     			if(block2==Blocks.log)
     			{
-    				worldObj.setBlock(xCoord+xz[i], yCoord+1, zCoord+xz[i+1],IHLMod.spruceTreeBlock,newFacing,3);
+    				worldObj.setBlock(xCoord+xz[i], yCoord+1, zCoord+xz[i+1],BlocksAndItems.spruceTreeBlock,newFacing,3);
     			}
     			else
     			{
@@ -323,43 +324,43 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
     	}
 		return false;
     }
-	
+
 	private boolean isLogBlock(Block block, int meta)
 	{
 		switch(this.currentTree)
 		{
 			case RUBBERTREE:
-				return block==IHLMod.ic2Wood || block==IHLMod.rubberTreeBlock;
+				return block==BlocksAndItems.ic2Wood || block==BlocksAndItems.rubberTreeBlock;
 			case SPRUCE:
-				return (block==Blocks.log && meta==1) || (block==IHLMod.spruceTreeBlock && meta>0);
+				return (block==Blocks.log && meta==1) || (block==BlocksAndItems.spruceTreeBlock && meta>0);
 		}
 		return false;
 	}
-	
+
 	private boolean isLeavesBlock(Block block)
 	{
 		switch(this.currentTree)
 		{
 			case RUBBERTREE:
-				return block==IHLMod.ic2Leaves;
+				return block==BlocksAndItems.ic2Leaves;
 			case SPRUCE:
 				return block==Blocks.leaves;
 		}
 		return false;
 	}
-	
+
 	private boolean isIncisedLog(Block block)
 	{
 		switch(this.currentTree)
 		{
 			case RUBBERTREE:
-				return block==IHLMod.rubberTreeBlock;
+				return block==BlocksAndItems.rubberTreeBlock;
 			case SPRUCE:
-				return block==IHLMod.spruceTreeBlock;
+				return block==BlocksAndItems.spruceTreeBlock;
 		}
 		return false;
 	}
-    
+
 	private void countRubberTreeLeaves()
     {
     	this.leavesCounter=0;
@@ -424,7 +425,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 						if(leavesMatrix[2+signx*2][2][iy-1]==1||leavesMatrix[2+signx][2+signz][iy-1]==1)
 						{
 							block=worldObj.getBlock(xCoord+mX()+signx*2, yCoord+iy, zCoord+mZ()+signz);
-	        				if(block==IHLMod.ic2Leaves)
+	        				if(block==BlocksAndItems.ic2Leaves)
 	        				{
 	        					this.leavesCounter+=worldObj.getLightBrightness(xCoord+mX()+signx*2, yCoord+iy, zCoord+mZ()+signz);
 								leavesMatrix[2+signx*2][2+signz][iy-1]=1;
@@ -456,7 +457,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
     		}
     	}
     }
-	
+
     //1.7.10 API
 	@Override
 	public boolean canDrain(ForgeDirection arg0, Fluid arg1) {
@@ -472,7 +473,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 	public String getInventoryName() {
 		return "sack";
 	}
-	
+
     private int mX()
 	{
 		switch(this.getFacing())
@@ -485,7 +486,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 		return 0;
 		}
 	}
-	
+
 	private int mZ()
 	{
 		switch(this.getFacing())
@@ -502,7 +503,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 		return -1;
 		}
 	}
-	
+
 	private short getFacingFromXZ(int x, int z)
 	{
 		switch(x)
@@ -523,12 +524,12 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 				}
 		}
 	}
-	
+
 	public float getRenderLiquidLevel()
 	{
 		return (float)this.visibleFluidAmount/(float)this.fluidTank.getCapacity();
 	}
-	
+
 	@Override
     public boolean shouldRenderInPass(int pass)
     {
@@ -536,7 +537,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
     }
 
 	@Override
-	public FluidStack drain(ForgeDirection arg0, FluidStack arg1, boolean arg2) 
+	public FluidStack drain(ForgeDirection arg0, FluidStack arg1, boolean arg2)
 	{
 		if(this.canDrain(arg0, arg1.getFluid()))
 		{
@@ -547,7 +548,7 @@ public class SackTileEntity extends TileEntityInventory implements IFluidHandler
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection arg0, int arg1, boolean arg2) 
+	public FluidStack drain(ForgeDirection arg0, int arg1, boolean arg2)
 	{
 		if(this.canDrain(arg0, null))
 		{

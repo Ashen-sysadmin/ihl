@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.util.Map;
 
 import codechicken.lib.gui.GuiDraw;
-import ihl.processing.metallurgy.DetonationSprayingMachineGui;
-import ihl.processing.metallurgy.DetonationSprayingMachineTileEntity;
+import ihl.gui.DetonationSprayingMachineGui;
+import ihl.tile_entity.machines.DetonationSprayingMachineTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,7 +18,7 @@ public class DetonationSprayingMachineRecipeHandler extends MachineRecipeHandler
     {
         return DetonationSprayingMachineGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -54,14 +54,14 @@ public class DetonationSprayingMachineRecipeHandler extends MachineRecipeHandler
     {
         return "ihl:textures/gui/GUIDetonationSprayingMachine.png";
     }
-    
+
     @Override
     public void drawBackground(int i)
     {
     	super.drawBackground(i);
         GuiDraw.drawTexturedModalRect(9-5, 34-11, 176, 0, 18, 36);
     }
-    
+
     @Override
     public void loadTransferRects()
     {

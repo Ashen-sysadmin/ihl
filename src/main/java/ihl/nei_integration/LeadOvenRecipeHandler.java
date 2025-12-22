@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.chemistry.LeadOvenGui;
-import ihl.processing.chemistry.LeadOvenTileEntity;
+import ihl.gui.LeadOvenGui;
+import ihl.tile_entity.machines.LeadOvenTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;

@@ -5,6 +5,7 @@ import java.util.List;
 import ic2.api.item.IC2Items;
 import ihl.IHLMod;
 import ihl.IHLModInfo;
+import ihl.items_blocks.BlocksAndItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,10 +39,10 @@ public class LostHeadEntity extends EntityFlying implements IMob
 
     private final double psr = 0.5D;
     private final double delta = 0.35D;
-    
+
     private final double damage = 4D;
     private final double knockbackStrength=2D;
-    
+
 
     public LostHeadEntity(World par1World)
     {
@@ -85,7 +86,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
     }
-    
+
     @SuppressWarnings("unchecked")
 	@Override
     public void onLivingUpdate()
@@ -113,7 +114,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
         {
             var3 = Vec3.createVectorHelper(var4.hitVec.xCoord, var4.hitVec.yCoord, var4.hitVec.zCoord);
         }
-        
+
         Entity var5 = null;
         List<Entity> var6 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
         double var7 = 0.0D;
@@ -142,7 +143,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
                 }
             }
         }
-        
+
 
         if (var5 != null)
         {
@@ -176,7 +177,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
         }
     }
 
-    
+
     @Override
 	protected void updateEntityActionState()
     {
@@ -282,7 +283,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
             float rYaw=-((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
             float rYawD=this.rotationYaw-rYaw;
             this.renderYawOffset = this.rotationYaw -= rYawD*0.2F;
-            
+
             if (this.attackCounter > 0)
             {
                 --this.attackCounter;
@@ -332,7 +333,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
     {
         return IHLModInfo.MODID+":lostHeadCry";
     }
-    
+
     @Override
 	public int getTalkInterval()
     {
@@ -367,7 +368,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
 
         if(var3==0)
         {
-        	this.entityDropItem(new ItemStack(IHLMod.ihlSkull,1), 1);
+        	this.entityDropItem(new ItemStack(BlocksAndItems.ihlSkull,1), 1);
         }
         else
         {
@@ -376,9 +377,9 @@ public class LostHeadEntity extends EntityFlying implements IMob
             	this.entityDropItem(new ItemStack(Items.dye, 1, 15), 1);
             }
         }
-        
+
         var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
-        
+
         for (var4 = 0; var4 < var3; ++var4)
         {
             this.entityDropItem(IC2Items.getItem("smallTinDust"), 1);
@@ -429,7 +430,7 @@ public class LostHeadEntity extends EntityFlying implements IMob
     {
         super.readEntityFromNBT(par1NBTTagCompound);
     }
-    
+
     @Override
     public void moveEntityWithHeading(float par1, float par2)
     {

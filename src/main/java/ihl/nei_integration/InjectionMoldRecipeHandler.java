@@ -3,7 +3,7 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.metallurgy.InjectionMoldTileEntity;
+import ihl.tile_entity.machines.InjectionMoldTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;

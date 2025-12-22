@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.util.Map;
 
 import codechicken.lib.gui.GuiDraw;
-import ihl.processing.metallurgy.MuffleFurnaceGui;
-import ihl.processing.metallurgy.MuffleFurnanceTileEntity;
+import ihl.gui.MuffleFurnaceGui;
+import ihl.tile_entity.machines.MuffleFurnanceTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,7 +18,7 @@ public class MuffleFurnaceRecipeHandler extends MachineRecipeHandler
     {
         return MuffleFurnaceGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -36,7 +36,7 @@ public class MuffleFurnaceRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{98-5};
     }
-    
+
     @Override
     protected int[] getOutputPosY()
     {
@@ -60,14 +60,14 @@ public class MuffleFurnaceRecipeHandler extends MachineRecipeHandler
     {
         return "muffleFurnace";
     }
-    
+
     @Override
     public void loadTransferRects()
     {
         this.transferRects.add(new RecipeTransferRect(new Rectangle(57-5, 29-11, 40, 30), this.getRecipeId(), new Object[0]));
     }
 
-    
+
     @Override
     public void drawBackground(int i)
     {

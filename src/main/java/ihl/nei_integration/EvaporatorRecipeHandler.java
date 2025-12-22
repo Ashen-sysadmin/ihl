@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.chemistry.EvaporatorGui;
-import ihl.processing.chemistry.EvaporatorTileEntity;
+import ihl.gui.EvaporatorGui;
+import ihl.tile_entity.machines.EvaporatorTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +17,7 @@ public class EvaporatorRecipeHandler extends MachineRecipeHandler
     {
         return EvaporatorGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -59,7 +59,7 @@ public class EvaporatorRecipeHandler extends MachineRecipeHandler
     {
         return "evaporator";
     }
-    
+
     @Override
     public void loadTransferRects()
     {

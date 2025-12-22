@@ -6,8 +6,8 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
-import ihl.processing.chemistry.LabElectrolyzerGui;
-import ihl.processing.chemistry.LabElectrolyzerTileEntity;
+import ihl.gui.LabElectrolyzerGui;
+import ihl.tile_entity.machines.LabElectrolyzerTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -60,7 +60,7 @@ public class LabElectrolyzerRecipeHandler extends MachineRecipeHandler {
 	public String getOverlayIdentifier() {
 		return "labElectrolyzer";
 	}
-	
+
     @Override
 	public void drawBackground(int recipeNumber)
     {

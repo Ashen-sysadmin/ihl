@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.metallurgy.AchesonFurnaceGui;
-import ihl.processing.metallurgy.AchesonFurnanceTileEntity;
+import ihl.gui.AchesonFurnaceGui;
+import ihl.tile_entity.machines.AchesonFurnanceTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +17,7 @@ public class AchesonFurnaceRecipeHandler extends MachineRecipeHandler
     {
         return AchesonFurnaceGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -35,7 +35,7 @@ public class AchesonFurnaceRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{98-5};
     }
-    
+
     @Override
     protected int[] getOutputPosY()
     {

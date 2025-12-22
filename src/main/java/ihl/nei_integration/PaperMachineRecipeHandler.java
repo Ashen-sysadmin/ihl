@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.chemistry.PaperMachineGui;
-import ihl.processing.chemistry.PaperMachineTileEntity;
+import ihl.gui.PaperMachineGui;
+import ihl.tile_entity.machines.PaperMachineTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +17,7 @@ public class PaperMachineRecipeHandler extends MachineRecipeHandler
     {
         return PaperMachineGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -53,7 +53,7 @@ public class PaperMachineRecipeHandler extends MachineRecipeHandler
     {
         return "ihl:textures/gui/GUIPaperMachine.png";
     }
-    
+
     @Override
     public void loadTransferRects()
     {

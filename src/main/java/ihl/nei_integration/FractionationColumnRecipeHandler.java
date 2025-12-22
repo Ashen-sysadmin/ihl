@@ -2,7 +2,7 @@ package ihl.nei_integration;
 
 import java.util.Map;
 
-import ihl.processing.chemistry.FractionatorBottomTileEntity;
+import ihl.tile_entity.machines.FractionatorBottomTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -15,7 +15,7 @@ public class FractionationColumnRecipeHandler extends MachineRecipeHandler
     {
         return null;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {

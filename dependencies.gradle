@@ -44,5 +44,5 @@ dependencies {
 	implementation 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:dev'
 	compileOnly 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:src'
 
-	implementation 'com.gregoriust.gregtech:gregtech_1.7.10:6.17.05:dev'
+	compileOnly 'com.gregoriust.gregtech:gregtech_1.7.10:6.17.05:dev'
 }

@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.chemistry.LoomGui;
-import ihl.processing.chemistry.LoomTileEntity;
+import ihl.gui.LoomGui;
+import ihl.tile_entity.machines.LoomTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +17,7 @@ public class LoomRecipeHandler extends MachineRecipeHandler
     {
         return LoomGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -35,7 +35,7 @@ public class LoomRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{127-5};
     }
-    
+
     @Override
     public void loadTransferRects()
     {

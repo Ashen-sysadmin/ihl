@@ -6,6 +6,8 @@ import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.item.tool.HandHeldInventory;
 import ic2.core.util.StackUtil;
+import ihl.container.CrucibleContainer;
+import ihl.gui.CrucibleGui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,7 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 
 public class CrucibleInventory extends HandHeldInventory {
 
-	ItemStack thisItemStack;
+	public ItemStack thisItemStack;
 	IInventory inventoryContainer;
 
 	public CrucibleInventory(EntityPlayer player, ItemStack stack) {

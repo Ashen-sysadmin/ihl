@@ -1,4 +1,5 @@
 package ihl.processing.metallurgy;
+import ihl.tile_entity.machines.DetonationSprayingMachineTileEntity;
 import org.lwjgl.opengl.GL11;
 
 import ic2.api.tile.IWrenchable;

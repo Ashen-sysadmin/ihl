@@ -2,8 +2,8 @@ package ihl.nei_integration;
 
 import java.util.Map;
 
-import ihl.processing.metallurgy.RollingMachineGui;
-import ihl.processing.metallurgy.RollingMachinePart1TileEntity;
+import ihl.gui.RollingMachineGui;
+import ihl.tile_entity.machines.RollingMachinePart1TileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -16,7 +16,7 @@ public class RollingMachineRecipeHandler extends MachineRecipeHandler
     {
         return RollingMachineGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {

@@ -4,24 +4,24 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.api.ItemInfo;
 import ihl.IHLModInfo;
-import ihl.processing.chemistry.ChemicalReactorGui;
-import ihl.processing.chemistry.CryogenicDistillerGui;
-import ihl.processing.chemistry.ElectricEvaporatorGui;
-import ihl.processing.chemistry.EvaporatorGui;
-import ihl.processing.chemistry.FluidizedBedReactorGui;
-import ihl.processing.chemistry.LabElectrolyzerGui;
-import ihl.processing.chemistry.LeadOvenGui;
-import ihl.processing.chemistry.LoomGui;
-import ihl.processing.chemistry.PaperMachineGui;
-import ihl.processing.metallurgy.AchesonFurnaceGui;
-import ihl.processing.metallurgy.DetonationSprayingMachineGui;
-import ihl.processing.metallurgy.ExtruderGui;
-import ihl.processing.metallurgy.GasWeldingStationGui;
-import ihl.processing.metallurgy.ImpregnatingMachineGui;
-import ihl.processing.metallurgy.MuffleFurnaceGui;
-import ihl.processing.metallurgy.RollingMachineGui;
-import ihl.processing.metallurgy.WireMillGui;
-import ihl.processing.metallurgy.WoodenRollingMachineGui;
+import ihl.gui.ChemicalReactorGui;
+import ihl.gui.CryogenicDistillerGui;
+import ihl.gui.ElectricEvaporatorGui;
+import ihl.gui.EvaporatorGui;
+import ihl.gui.FluidizedBedReactorGui;
+import ihl.gui.LabElectrolyzerGui;
+import ihl.gui.LeadOvenGui;
+import ihl.gui.LoomGui;
+import ihl.gui.PaperMachineGui;
+import ihl.gui.AchesonFurnaceGui;
+import ihl.gui.DetonationSprayingMachineGui;
+import ihl.gui.ExtruderGui;
+import ihl.gui.GasWeldingStationGui;
+import ihl.gui.ImpregnatingMachineGui;
+import ihl.gui.MuffleFurnaceGui;
+import ihl.gui.RollingMachineGui;
+import ihl.gui.WireMillGui;
+import ihl.gui.WoodenRollingMachineGui;
 
 public class NEIIHLConfig implements IConfigureNEI
 {
@@ -99,7 +99,7 @@ public class NEIIHLConfig implements IConfigureNEI
         API.registerUsageHandler(new IronWorkbenchRecipeHandler());
         this.addSubsets();
     }
-    
+
     public void addSubsets() {}
 
     @Override

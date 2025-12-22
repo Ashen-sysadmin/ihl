@@ -8,8 +8,8 @@ import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import ic2.core.item.ItemFluidCell;
-import ihl.processing.chemistry.CryogenicDistillerGui;
-import ihl.processing.chemistry.CryogenicDistillerTileEntity;
+import ihl.gui.CryogenicDistillerGui;
+import ihl.tile_entity.machines.CryogenicDistillerTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -24,13 +24,13 @@ public class CryogenicDistillerRecipeHandler extends MachineRecipeHandler
     {
         return CryogenicDistillerGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
         return new int[]{103-5};
     }
-    
+
     @Override
     public void loadTransferRects()
     {
@@ -72,7 +72,7 @@ public class CryogenicDistillerRecipeHandler extends MachineRecipeHandler
     {
         return "cryogenicDistiller";
     }
-    
+
     @SuppressWarnings("unchecked")
 	@Override
     public void drawExtras(int recipeNumber)

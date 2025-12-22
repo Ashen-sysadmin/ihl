@@ -2,6 +2,7 @@ package ihl.processing.metallurgy;
 
 import ic2.core.ContainerBase;
 import ic2.core.slot.SlotInvSlot;
+import ihl.tile_entity.machines.LathePart1TileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
@@ -30,7 +31,7 @@ public class LatheContainer extends ContainerBase<LathePart1TileEntity> {
         {
             this.addSlotToContainer(new Slot(entityPlayer.inventory, col, 8 + col * 18, height + -24));
         }
-        this.addSlotToContainer(new SlotInvSlot(lathePart1TileEntity.dischargeSlot,0, 22, 55));	
+        this.addSlotToContainer(new SlotInvSlot(lathePart1TileEntity.dischargeSlot,0, 22, 55));
 	}
 
 	   @Override
@@ -52,7 +53,7 @@ public class LatheContainer extends ContainerBase<LathePart1TileEntity> {
 	        this.lastProgress = this.tileEntity.progress;
 	        this.lastEnergy = (short) this.tileEntity.getEnergy();
 	    }
-	    
+
 	    @Override
 		public void updateProgressBar(int index, int value)
 	    {
@@ -68,5 +69,5 @@ public class LatheContainer extends ContainerBase<LathePart1TileEntity> {
 	            break;
 	        }
 	    }
-	    
+
 }

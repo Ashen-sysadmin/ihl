@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.metallurgy.GasWeldingStationGui;
-import ihl.processing.metallurgy.GasWeldingStationTileEntity;
+import ihl.gui.GasWeldingStationGui;
+import ihl.tile_entity.machines.GasWeldingStationTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +17,7 @@ public class GasWeldingStationGasRecipeHandler extends MachineRecipeHandler
     {
         return GasWeldingStationGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -41,13 +41,13 @@ public class GasWeldingStationGasRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{15-11,33-11};
     }
-    
+
     @Override
     public void loadTransferRects()
     {
         this.transferRects.add(new RecipeTransferRect(new Rectangle(80-5, 15-11, 50, 50), this.getRecipeId(), new Object[0]));
     }
-    
+
     @Override
 	public String getRecipeId()
     {

@@ -1,4 +1,5 @@
 package ihl.processing.metallurgy;
+import ihl.tile_entity.machines.CoilerTileEntity;
 import org.lwjgl.opengl.GL11;
 
 import ic2.api.tile.IWrenchable;
@@ -48,7 +49,7 @@ private final float scale=1F/16F;
 		GL11.glTranslatef((float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F);
 		GL11.glScalef(1.0F, -1F, -1F);
 		GL11.glRotatef(rotation*90, 0.0F, 1.0F, 0.0F);
-		
+
 		bindTexture(tex);
 		model.Base.render(scale);
 		model.Belt.render(scale);
@@ -65,7 +66,7 @@ private final float scale=1F/16F;
 		}
 		else
 		{
-			
+
 			if(cte.hasCoil)
 			{
 				model.CoilRotating.render(scale);

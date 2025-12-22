@@ -9,7 +9,7 @@ import ic2.core.IC2;
 import ihl.IHLCreativeTab;
 import ihl.IHLModInfo;
 import ihl.items_blocks.IHLItemBlock;
-import ihl.processing.metallurgy.MuffleFurnanceTileEntity;
+import ihl.tile_entity.machines.MuffleFurnanceTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -31,10 +31,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ExplosiveBlock extends Block implements ITileEntityProvider{
-	
+
 	IIcon[] textures = new IIcon[6];
 
-	public ExplosiveBlock() 
+	public ExplosiveBlock()
 	{
 		super(Material.tnt);
         this.setCreativeTab(IHLCreativeTab.tab);
@@ -42,10 +42,10 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
         this.setHardness(2F);
         this.setResistance(1F);
 	}
-	
+
 	@Override
  	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void getSubBlocks(Item item, CreativeTabs par2CreativeTabs, List itemList) 
+	public void getSubBlocks(Item item, CreativeTabs par2CreativeTabs, List itemList)
 	{
     	ItemStack result = new ItemStack(item);
     	result.stackTagCompound=new NBTTagCompound();
@@ -58,7 +58,7 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
     	result.stackTagCompound.setInteger("explosionPower", Integer.MAX_VALUE);//31000
 		itemList.add(result);
 	}
-	
+
 	@Override
  	@SuppressWarnings("rawtypes")
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity)
@@ -75,30 +75,30 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 			super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
 			this.setBlockBoundsForItemRender();
     }
-	
+
     @Override
 	public void setBlockBoundsForItemRender()
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
-    
+
 	public static void init()
 	{
 		GameRegistry.registerBlock(new ExplosiveBlock(), IHLItemBlock.class,"ihlExplosive");
 		GameRegistry.registerTileEntity(ExplosiveTileEntity.class, "explosiveTileEntity");
 	}
-	
+
 	@Override
 	public void	dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float chance, int flag)
 	{
 		super.dropBlockAsItemWithChance(world, x, y, z, meta, chance, flag);
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int var2) {
 		return new ExplosiveTileEntity();
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister)
@@ -108,13 +108,13 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 	   	this.textures[1] = par1IconRegister.registerIcon(IHLModInfo.MODID + ":explosiveBlockTop");
 	   	this.textures[2] = this.textures[3] = this.textures[4] = this.textures[5] = this.blockIcon;
 	}
-   	
+
 	@Override
 	public boolean hasTileEntity(int metadata)
 	{
 	    return true;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world,int x,int y,int z,EntityPlayer player,int i,float pos_x,float pos_y,float pos_z){
 		TileEntity te = world.getTileEntity(x,y,z);
@@ -124,7 +124,7 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
 	{
@@ -141,7 +141,7 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 			}
 		}
 	}
-	
+
     /**
      * Called when the block is placed in the world.
      */
@@ -154,27 +154,27 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
         	t.readFromNBT(itemStack.stackTagCompound);
         }
     }
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) 
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
 		return this.getIcon(side, 0);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int side, int meta) 
+	public IIcon getIcon(int side, int meta)
 	{
 		return this.textures[side];
 	}
-	
+
 	@Override
     public boolean onBlockEventReceived(World world, int x, int y, int z, int metadata, int flag)
     {
 		return true;
     }
-    
+
     public enum ExplosiveType
     {
     	MuffleFurnace("muffleFurnance",MuffleFurnanceTileEntity.class, true, new ItemStack(Items.brick));
@@ -190,13 +190,13 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 		boolean isNormalBlock=true;
 		ItemStack itemDroppedOnBlockDestroy;
     }
-    
+
 	@Override
 	public int getRenderType()
 	{
 		return 0;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube()
 	{
@@ -208,25 +208,25 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 	{
 		return true;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public IIcon getInnerTextureForBlockRenderer()
 	{
 		return this.blockIcon;
 	}
-	
+
 	@Override
     public boolean canDropFromExplosion(Explosion explosion)
     {
         return false;
     }
-	
+
 	@Override
 	public float getExplosionResistance(Entity entity)
 	{
 		return -1f;
 	}
-	
+
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y ,int z, double explosionX, double explosionY, double explosionZ)
 	{
@@ -237,7 +237,7 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 		}
 		return -1f;
 	}
-	
+
 	@Override
 	public void onBlockDestroyedByExplosion(World world, int x, int y ,int z, Explosion explosion)
 	{
@@ -247,6 +247,6 @@ public class ExplosiveBlock extends Block implements ITileEntityProvider{
 			((ExplosiveTileEntity)te).createExplosion(null);
 		}
 	}
-	
-	
+
+
 }

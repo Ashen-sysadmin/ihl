@@ -26,6 +26,7 @@ import ic2.core.upgrade.IUpgradableBlock;
 import ic2.core.upgrade.IUpgradeItem;
 import ic2.core.upgrade.UpgradableProperty;
 import ihl.IHLMod;
+import ihl.items_blocks.BlocksAndItems;
 import ihl.utils.IHLInvSlotDischarge;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.item.EntityItem;
@@ -53,7 +54,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
     public final InvSlot inputSlot;
 
 	public int updateChecksum=-1;
-    
+
     private AudioSource startAS;
 	public boolean targetSet=false;
 	public int targetDimension;
@@ -61,7 +62,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 	public int targetY;
 	public int targetZ;
 	/** 0 - Ready, 100%
-	* 1 - Not enough energy 
+	* 1 - Not enough energy
 	* 2 - Receiver not responding
 	* 3 - Receiver not defined
 	* 4 - Clean receiver chamber!
@@ -69,8 +70,8 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 	public int currentStatus=0;
 	public int lastStatus=0;
 	private int timer=0;
-	
-	
+
+
     public TDITTileEntity()
     {
     	this.defaultTier=IHLMod.config.tditTier;
@@ -81,7 +82,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
         this.outputSlot = new InvSlotOutput(this, "output", 2, 9);
         this.inputSlot = new InvSlot(this, "input", 2, InvSlot.Access.I, 9, InvSlot.InvSide.TOP);
     }
-    
+
 	@Override
     public List<String> getNetworkedFields()
     {
@@ -91,7 +92,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 		fields.add("currentStatus");
 		return fields;
     }
-	
+
     @Override
 	public void readFromNBT(NBTTagCompound nbttagcompound)
     {
@@ -127,7 +128,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
         nbttagcompound.setInteger("targetY", this.targetY);
         nbttagcompound.setInteger("targetZ", this.targetZ);
     }
-    
+
     @Override
 	public void onLoaded()
     {
@@ -142,7 +143,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
         	this.startAS = IC2.audioManager.createSource(this, PositionSpec.Center, this.getStartSoundFile(),false,false, 1F);
         }
     }
-    
+
     @Override
 	public void onUnloaded()
     {
@@ -152,7 +153,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
             this.startAS = null;
             IC2.audioManager.removeSources(this);
         }
-        
+
         if (IC2.platform.isSimulating() && this.addedToEnergyNet)
         {
             MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
@@ -160,12 +161,12 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
         }
         super.onUnloaded();
     }
-    
+
 	@Override
 	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
 		return false;
 	}
-	
+
 	@Override
 	public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
 		if(this.dischargeSlot.get()!=null)this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord+1, this.zCoord, this.dischargeSlot.get()));
@@ -173,26 +174,26 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 		if(this.upgradeSlot.get(1)!=null)this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord+1, this.zCoord, this.upgradeSlot.get(1)));
 		if(this.upgradeSlot.get(2)!=null)this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord+1, this.zCoord, this.upgradeSlot.get(2)));
 		if(this.upgradeSlot.get(3)!=null)this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord+1, this.zCoord, this.upgradeSlot.get(3)));
-		return new ItemStack(IHLMod.tditBlock,1);
+		return new ItemStack(BlocksAndItems.tditBlock,1);
 	}
-	
+
 	@Override
     public void setFacing(short facing1)
     {
     	super.setFacing(facing1);
     	this.updateChecksum=-1;
     }
-    
+
     public boolean enableUpdateEntity()
     {
         return true;
     }
-    
+
     public String getStartSoundFile()
     {
         return "Machines/IHL Industrial Fan/start.ogg";
     }
-    
+
     public String getLoopSoundFile()
     {
         return "Machines/IHL Industrial Fan/loop.ogg";
@@ -206,7 +207,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
     @Override
 	public void updateEntityServer()
     {
-    	
+
         if (IC2.platform.isSimulating())
         {
             this.setOverclockRates();
@@ -222,7 +223,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
             	{
             		this.sendItemStack();
             		this.energy-=energyToOperate;
-            	}	
+            	}
             	else if(energyToOperate==0 && this.energy>100D)
             	{
             		this.currentStatus=0;
@@ -253,22 +254,22 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
         {
         	this.energy=this.maxStorage;
         }
-        
-        
+
+
         if(IC2.platform.isRendering() && this.startAS!=null)
         {
         	if(this.getActive())
         	{
         			this.startAS.play();
         	}
-        	else 
+        	else
         	{
         		this.startAS.stop();
         	}
         }
 
     }
-    
+
 	@Override
 	public boolean acceptsEnergyFrom(TileEntity emitter,
 			ForgeDirection direction) {
@@ -279,21 +280,21 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 	public String getInventoryName() {
 		return "tdit";
 	}
-	
+
 	public int getStored() {
 		return Math.round((float)this.energy);
 	}
-	
+
 	public void setStored(int value) {
 		this.energy=value;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public GuiScreen getGui(EntityPlayer arg0, boolean arg1) {
 		return new TDITGui(new TDITContainer(arg0, this));
 	}
-	
+
     public boolean getGui(EntityPlayer player)
     {
 			return this instanceof IHasGui ? (IC2.platform.isSimulating() ? IC2.platform.launchGui(player, this) : true) : false;
@@ -305,7 +306,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 	}
 	@Override
 	public void onGuiClosed(EntityPlayer arg0) {}
-	
+
 	public void setOverclockRates()
     {
 		int tierUp=0;
@@ -335,20 +336,20 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 	        this.updateChecksum=checksum;
 		}
     }
-	
+
     //1.7.10 API
 	@Override
 	public double getDemandedEnergy()
 	{
 		 return this.maxStorage - this.energy;
 	}
-	
+
 	@Override
 	public int getSinkTier()
 	{
 		return this.tier;
 	}
-	
+
 	@Override
 	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
 	{
@@ -362,7 +363,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
             return 0.0D;
         }
 	}
-	
+
 	public void setTarget(int targetX2, int targetY2, int targetZ2, int dimesionID) {
 		this.targetSet=true;
 		this.targetX=targetX2;
@@ -370,7 +371,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 		this.targetZ=targetZ2;
 		this.targetDimension=dimesionID;
 	}
-	
+
 	public boolean canRecieve(List<ItemStack> itemStackList)
 	{
 		int countEmptySlots=0;
@@ -383,7 +384,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 		}
 		return countEmptySlots>=itemStackList.size();
 	}
-	
+
 	public void recieveItemStack(List<ItemStack> itemStackList)
 	{
 		this.outputSlot.add(itemStackList);
@@ -397,7 +398,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
             }
         }
 	}
-	
+
 	private int countEnergyToOperate()
 	{
 		int energy = 0;
@@ -409,9 +410,9 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 			}
 		}
 		return energy;
-		
+
 	}
-	
+
 	public void sendItemStack()
 	{
 		if(!this.inputSlot.isEmpty() && this.targetSet)
@@ -453,7 +454,7 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 		}
 	}
 
-	public ItemStack getOutput(int arg0) 
+	public ItemStack getOutput(int arg0)
 	{
 		return this.outputSlot.get(arg0);
 	}
@@ -462,13 +463,13 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 		return this.outputSlot.size();
 	}
 
-	public void setOutput(int arg0, ItemStack arg1) 
+	public void setOutput(int arg0, ItemStack arg1)
 	{
 		this.outputSlot.put(arg0, arg1);
 	}
 
 	@Override
-	public Set<UpgradableProperty> getUpgradableProperties() 
+	public Set<UpgradableProperty> getUpgradableProperties()
 	{
 		Set<UpgradableProperty> properties = new HashSet<UpgradableProperty>();
 		properties.add(UpgradableProperty.ItemProducing);
@@ -492,6 +493,6 @@ public class TDITTileEntity extends TileEntityInventory implements IEnergySink, 
 		{
 			return false;
 		}
-		
+
 	}
 }

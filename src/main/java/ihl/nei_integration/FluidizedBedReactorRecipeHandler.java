@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.util.Map;
 
 import codechicken.lib.gui.GuiDraw;
-import ihl.processing.chemistry.FluidizedBedReactorGui;
-import ihl.processing.chemistry.FluidizedBedReactorTileEntity;
+import ihl.gui.FluidizedBedReactorGui;
+import ihl.tile_entity.machines.FluidizedBedReactorTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -24,13 +24,13 @@ public class FluidizedBedReactorRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{41-5};
     }
-    
+
     @Override
     protected int[] getInputPosY()
     {
         return new int[]{23-11,41-11};
     }
-    
+
     @Override
     protected int[] getFluidInputPosX()
     {
@@ -42,7 +42,7 @@ public class FluidizedBedReactorRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{15-11};
     }
-    
+
     @Override
     protected int[] getOutputPosX()
     {
@@ -54,7 +54,7 @@ public class FluidizedBedReactorRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{102-5,84-5};
     }
-    
+
     @Override
     protected int[] getOutputPosY()
     {
@@ -85,7 +85,7 @@ public class FluidizedBedReactorRecipeHandler extends MachineRecipeHandler
     {
         return "ihl:textures/gui/GUIFluidizedBedReactor.png";
     }
-    
+
     @Override
     public void loadTransferRects()
     {

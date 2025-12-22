@@ -6,8 +6,8 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
-import ihl.processing.metallurgy.WireMillGui;
-import ihl.processing.metallurgy.WireMillTileEntity;
+import ihl.gui.WireMillGui;
+import ihl.tile_entity.machines.WireMillTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -20,7 +20,7 @@ public class WireMillRecipeHandler extends MachineRecipeHandler
     {
         return WireMillGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -32,7 +32,7 @@ public class WireMillRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{31-11,14-11};
     }
-    
+
     @Override
     protected int[] getFluidInputPosX()
     {
@@ -44,7 +44,7 @@ public class WireMillRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{14-11};
     }
-    
+
 
     @Override
     protected int[] getOutputPosX()
@@ -75,13 +75,13 @@ public class WireMillRecipeHandler extends MachineRecipeHandler
     {
         return "wireMill";
     }
-    
+
     @Override
 	public void loadTransferRects()
     {
         this.transferRects.add(new RecipeTransferRect(new Rectangle(134-5, 33-11, 18, 13), this.getRecipeId(), new Object[0]));
     }
-    
+
     @Override
     public void drawBackground(int i)
     {

@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.metallurgy.WoodenRollingMachineGui;
-import ihl.processing.metallurgy.WoodenRollingMachinePart1TileEntity;
+import ihl.gui.WoodenRollingMachineGui;
+import ihl.tile_entity.machines.WoodenRollingMachinePart1TileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +17,7 @@ public class WoodenRollingMachineRecipeHandler extends MachineRecipeHandler
     {
         return WoodenRollingMachineGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -53,7 +53,7 @@ public class WoodenRollingMachineRecipeHandler extends MachineRecipeHandler
     {
         return "ihl:textures/gui/GUIWoodenRollingMachine.png";
     }
-    
+
     @Override
     public void loadTransferRects()
     {

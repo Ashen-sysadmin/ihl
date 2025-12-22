@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.metallurgy.ExtruderGui;
-import ihl.processing.metallurgy.ExtruderTileEntity;
+import ihl.gui.ExtruderGui;
+import ihl.tile_entity.machines.ExtruderTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;

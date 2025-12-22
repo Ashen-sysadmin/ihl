@@ -6,8 +6,8 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
-import ihl.processing.chemistry.ChemicalReactorGui;
-import ihl.processing.chemistry.ChemicalReactorTileEntity;
+import ihl.gui.ChemicalReactorGui;
+import ihl.tile_entity.machines.ChemicalReactorTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -21,19 +21,19 @@ public class ChemicalReactorRecipeHandler extends MachineRecipeHandler
     {
         return ChemicalReactorGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
         return new int[]{104-5,122-5};
     }
-    
+
     @Override
     protected int[] getInputPosY()
     {
         return new int[]{15-11};
     }
-    
+
     @Override
     protected int[] getFluidInputPosX()
     {
@@ -45,7 +45,7 @@ public class ChemicalReactorRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{15-11};
     }
-    
+
     @Override
     protected int[] getOutputPosX()
     {
@@ -57,7 +57,7 @@ public class ChemicalReactorRecipeHandler extends MachineRecipeHandler
     {
         return new int[]{42-5,60-5};
     }
-    
+
     @Override
     protected int[] getOutputPosY()
     {
@@ -87,13 +87,13 @@ public class ChemicalReactorRecipeHandler extends MachineRecipeHandler
     {
         return "chemicalReactor";
     }
-    
+
     @Override
     public void loadTransferRects()
     {
         this.transferRects.add(new RecipeTransferRect(new Rectangle(103-5,32-10, 36, 18), this.getRecipeId(), new Object[0]));
     }
-    
+
     @Override
     public void drawExtras(int recipeNumber)
     {
@@ -107,7 +107,7 @@ public class ChemicalReactorRecipeHandler extends MachineRecipeHandler
         	GuiDraw.fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("ihl.use_with_cryogenic_distiller"), 0, 27, 16777215);
         }
     }
-    
+
     @Override
     public void drawBackground(int i)
     {

@@ -3,8 +3,8 @@ package ihl.nei_integration;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import ihl.processing.chemistry.ElectrolysisBathGui;
-import ihl.processing.chemistry.ElectrolysisBathTileEntity;
+import ihl.gui.ElectrolysisBathGui;
+import ihl.tile_entity.machines.ElectrolysisBathTileEntity;
 import ihl.recipes.UniversalRecipeInput;
 import ihl.recipes.UniversalRecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +17,7 @@ public class ElectrolysisBathRecipeHandler extends MachineRecipeHandler
     {
         return ElectrolysisBathGui.class;
     }
-    
+
     @Override
     protected int[] getInputPosX()
     {
@@ -59,7 +59,7 @@ public class ElectrolysisBathRecipeHandler extends MachineRecipeHandler
     {
         return "electrolysisBath";
     }
-    
+
     @Override
     public void loadTransferRects()
     {
