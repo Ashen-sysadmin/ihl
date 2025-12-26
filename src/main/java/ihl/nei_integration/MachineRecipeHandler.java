@@ -64,7 +64,7 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
 			}
 			if (stack instanceof IHLPositionedStack)
 				drawFormattedString((IHLPositionedStack) stack);
-				
+
 		}
 		for (PositionedStack stack : recipe.otherStacks) {
 			if (stack instanceof IHLPositionedStack)
@@ -104,26 +104,35 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
 		if (outputId.equals(this.getRecipeId())) {
-			Iterator<Entry<UniversalRecipeInput, UniversalRecipeOutput>> i$ = this.getRecipeList().entrySet()
-					.iterator();
-
-			while (i$.hasNext()) {
-				Entry<UniversalRecipeInput, UniversalRecipeOutput> entry = i$.next();
-				this.arecipes.add(new MachineRecipeHandler.CachedIORecipe(entry.getKey(), entry.getValue(),
-						getAdditionalIngredients()));
+			for (Entry<UniversalRecipeInput, UniversalRecipeOutput> entry : this.getRecipeList().entrySet()) {
+				this.arecipes.add(new CachedIORecipe(entry.getKey(), entry.getValue(),
+					getAdditionalIngredients()));
 			}
-		} else {
+		} else if (outputId.equals("liquid") && results[0] instanceof FluidStack) {
+			FluidStack fluidStack = (FluidStack) results[0];
+			for (Entry<UniversalRecipeInput, UniversalRecipeOutput> entry : this.getRecipeList().entrySet()) {
+				for (FluidStack output : ((UniversalRecipeOutput) entry.getValue()).getFluidOutputs()) {
+					if (output != null && output.getFluid() == fluidStack.getFluid()) {
+						this.arecipes.add(new CachedIORecipe((UniversalRecipeInput) entry.getKey(),
+							(UniversalRecipeOutput) entry.getValue(), getAdditionalIngredients()));
+						break;
+					}
+				}
+			}
+		}else{
 			super.loadCraftingRecipes(outputId, results);
 		}
 	}
 
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
-		Iterator<Entry<UniversalRecipeInput, UniversalRecipeOutput>> i$ = this.getRecipeList().entrySet().iterator();
 		FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(result);
+
 		if (fluidStack == null && result.getItem() instanceof IFluidContainerItem) {
 			IFluidContainerItem ifc = (IFluidContainerItem) result.getItem();
-			fluidStack = ifc.getFluid(result);
+			if (ifc != null) {
+				fluidStack = ifc.getFluid(result);
+			}
 		} else if (result.getItem() instanceof ItemBlock) {
 			Block blockfluid = ((ItemBlock) result.getItem()).field_150939_a;
 			if (blockfluid instanceof BlockFluidBase) {
@@ -134,30 +143,23 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
 			}
 		}
 		if (fluidStack != null) {
-			while (i$.hasNext()) {
-				Entry<UniversalRecipeInput, UniversalRecipeOutput> entry = i$.next();
-				Iterator<FluidStack> i$1 = ((UniversalRecipeOutput) entry.getValue()).getFluidOutputs().iterator();
-				while (i$1.hasNext()) {
-					FluidStack output = i$1.next();
+			for (Entry<UniversalRecipeInput, UniversalRecipeOutput> entry : this.getRecipeList().entrySet()) {
+				for (FluidStack output : ((UniversalRecipeOutput) entry.getValue()).getFluidOutputs()) {
 					if (output != null && output.getFluid() == fluidStack.getFluid()) {
-						this.arecipes.add(new MachineRecipeHandler.CachedIORecipe((UniversalRecipeInput) entry.getKey(),
-								(UniversalRecipeOutput) entry.getValue(), getAdditionalIngredients()));
+						this.arecipes.add(new CachedIORecipe((UniversalRecipeInput) entry.getKey(),
+							(UniversalRecipeOutput) entry.getValue(), getAdditionalIngredients()));
 						break;
 					}
 				}
 			}
 		} else {
-			while (i$.hasNext()) {
-				Entry<UniversalRecipeInput, UniversalRecipeOutput> entry = i$.next();
-				Iterator<RecipeOutputItemStack> i$1 = (entry.getValue()).getItemOutputs().iterator();
+			for (Entry<UniversalRecipeInput, UniversalRecipeOutput> entry : this.getRecipeList().entrySet()) {
 
-				while (i$1.hasNext()) {
-					RecipeOutputItemStack output = i$1.next();
-
+				for (RecipeOutputItemStack output : (entry.getValue()).getItemOutputs()) {
 					if (NEIServerUtils.areStacksSameTypeCrafting(output.itemStack, result)
-							|| IHLUtils.isItemsHaveSameOreDictionaryEntry(output.itemStack, result)) {
-						this.arecipes.add(new MachineRecipeHandler.CachedIORecipe(entry.getKey(), entry.getValue(),
-								getAdditionalIngredients()));
+						|| IHLUtils.isItemsHaveSameOreDictionaryEntry(output.itemStack, result)) {
+						this.arecipes.add(new CachedIORecipe(entry.getKey(), entry.getValue(),
+							getAdditionalIngredients()));
 						break;
 					}
 				}

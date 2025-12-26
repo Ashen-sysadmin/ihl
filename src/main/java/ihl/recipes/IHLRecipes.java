@@ -128,7 +128,7 @@ public class IHLRecipes {
 
 
 		Recipes.metalformerExtruding.addRecipe(new RecipeInputOreDict("dustIrongraphite"), null,
-			IHLUtils.getThisModItemStackWithSize("linerIronGraphite", 4));
+			IHLUtils.getThisModItemStackWithSize("linerIronGraphite", 1));
 		Recipes.compressor.addRecipe(new RecipeInputOreDict("foilMica", 4), null,
 			IHLUtils.getThisModItemStack("plateMica"));
 		Recipes.metalformerExtruding.addRecipe(new RecipeInputOreDict("dustBoronCarbide"), null,
@@ -701,7 +701,7 @@ public class IHLRecipes {
 				IHLUtils.getThisModItemStack("pipelineAccessoriesSteel"),
 				IHLUtils.getThisModItemStack("foilRubber"),
 				IHLUtils.getThisModItemStackWithSize("stickSteel", 2),
-				IHLUtils.getThisModItemStackWithSize("linerIronGraphiteGreased", 4),
+				IHLUtils.getThisModItemStackWithSize("linerIronGraphiteGreased", 2),
 				IHLUtils.getThisModItemStackWithSize("highPressureVesselSteel", 2) }),
 			Arrays.asList(new ItemStack[] { IHLUtils.getThisModItemStack("cryogenicDistiller") }),
 			Arrays.asList(new ItemStack[] { IHLUtils.getThisModItemStack("lathePart1") })));
@@ -773,7 +773,7 @@ public class IHLRecipes {
 				IHLUtils.getOreDictItemStackWithSize("plateSteel", 4),
 				IHLUtils.getThisModItemStackWithSize("barD10Steel", 4),
 				IHLUtils.getThisModItemStack("rollingMachineSetOfMoldedPartsSteel"),
-				IHLUtils.getThisModItemStackWithSize("linerIronGraphiteGreased", 4) }),
+				IHLUtils.getThisModItemStackWithSize("linerIronGraphiteGreased", 2) }),
 			Arrays.asList(new ItemStack[] { IHLUtils.getThisModItemStack("rollingMachinePart1") }),
 			Arrays.asList(new ItemStack[] { IHLUtils.getThisModItemStack("gasWeldingStation") })));
 		IronWorkbenchTileEntity.addRecipe(new IronWorkbenchRecipe(
@@ -1060,7 +1060,7 @@ public class IHLRecipes {
 				new RecipeInputOreDict("foilSteel", 2), RecipeInputs.get("boltM10x1Steel", 8),
 				RecipeInputs.get("nutM10x1Steel", 8), RecipeInputs.get("barD10Steel", 16),
 				RecipeInputs.get("rollingMachineSetOfMoldedPartsSteel"),
-				RecipeInputs.get("linerIronGraphiteGreased", 4),
+				RecipeInputs.get("linerIronGraphiteGreased", 2),
 				RecipeInputs.get("turboCompressorSetOfMoldedPartsBronze"),
 				RecipeInputs.get("foilRubber") }),
 			Arrays.asList(new ItemStack[] { IHLUtils.getThisModItemStack("paperMachine") }),
@@ -1282,20 +1282,20 @@ public class IHLRecipes {
 		ImpregnatingMachineTileEntity.addQuenchingRecipe("drillSteelHot", "drillSteelHardened");
 		ImpregnatingMachineTileEntity.addQuenchingRecipe("sawBladeSteelHot", "sawBladeSteelHardened");
 		ImpregnatingMachineTileEntity.addRecipe(
-			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("oleicacid", 1) }),
+			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("oleicacid", 100) }),
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteHot") })),
 			new UniversalRecipeOutput(null,
-				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 2));
+				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 20));
 		ImpregnatingMachineTileEntity.addRecipe(
-			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("seedoil", 1) }),
+			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("seedoil", 100) }),
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteHot") })),
 			new UniversalRecipeOutput(null,
-				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 2));
+				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 20));
 		ImpregnatingMachineTileEntity.addRecipe(
-			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("mineraloil", 1) }),
+			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("mineraloil", 100) }),
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteHot") })),
 			new UniversalRecipeOutput(null,
-				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 2));
+				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 20));
 	}
 
 	private static void RegisterDetonationSprayingMachineRecipes(){
@@ -1924,7 +1924,7 @@ public class IHLRecipes {
 			GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 1L));
 		GregTech_API.sRecipeAdder.addFormingPressRecipe(IHLUtils.getThisModItemStack("dustIrongraphite"),
 			ItemList.Shape_Mold_Cylinder.get(0L, new Object[0]),
-			IHLUtils.getThisModItemStackWithSize("linerIronGraphite", 4), 950, 30);
+			IHLUtils.getThisModItemStackWithSize("linerIronGraphite", 1), 950, 30);
 		GregTech_API.sRecipeAdder.addFormingPressRecipe(IHLUtils.getThisModItemStack("dustCoalElectrodePremix"),
 			ItemList.Shape_Extruder_Rod.get(0L, new Object[0]),
 			IHLUtils.getThisModItemStack("stickCoalElectrodePremix"), 950, 30);

@@ -217,12 +217,13 @@ public class DosingPumpTileEntity extends BasicElectricMotorTileEntity implement
 	}
 
 	public void setPowered(boolean isPowered) {
-		if (isPowered && !prevIsPowered && this.energy > 0 && this.tickFree) {
-			this.tickFree = false; // Only one operation per tick max
-			this.operate();
+		if (prevIsPowered != isPowered && this.tickFree){
+			this.tickFree = false;
+			if (isPowered && this.energy > 0) {
+				this.operate();
+			}
 		}
 		prevIsPowered = isPowered;
-
+		 // Only one operation per tick max
 	}
-
 }
