@@ -176,7 +176,7 @@ public class GasWeldingStationTileEntity extends TileEntityInventory implements 
 
 	public UniversalRecipeInput getInput()
 	{
-		return new UniversalRecipeInput(new FluidStack[] {this.flammableGasTank.getLigthestFluid(), this.oxygenTank.getFluid()}, new ItemStack[]{this.input.get(0),this.input.get(1),this.input.get(2)});
+		return new UniversalRecipeInput(new FluidStack[] {this.flammableGasTank.getLightestFluid(), this.oxygenTank.getFluid()}, new ItemStack[]{this.input.get(0),this.input.get(1),this.input.get(2)});
 	}
 
 	public static void addGasRecipe(ItemStack input, FluidStack inputFluid, FluidStack output, FluidStack output2)
@@ -260,11 +260,11 @@ public class GasWeldingStationTileEntity extends TileEntityInventory implements 
 	{
 		return
 				this.flammableGasTank.getFluid()!=null &&
-				this.flammableGasTank.getLigthestFluid().getFluid().getName().equals("acetylene") &&
-				this.flammableGasTank.getLigthestFluid().amount>=20 &&
+				this.flammableGasTank.getLightestFluid().getFluid().getName().equals("acetylene") &&
+				this.flammableGasTank.getLightestFluid().amount>=20 &&
 				this.oxygenTank.getFluid()!=null &&
-				this.oxygenTank.getLigthestFluid().getFluid().getName().equals("oxygen") &&
-				this.oxygenTank.getLigthestFluid().amount>=20;
+				this.oxygenTank.getLightestFluid().getFluid().getName().equals("oxygen") &&
+				this.oxygenTank.getLightestFluid().amount>=20;
 	}
 
 	@Override

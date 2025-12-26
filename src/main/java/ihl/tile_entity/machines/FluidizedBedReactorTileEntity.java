@@ -201,7 +201,7 @@ public class FluidizedBedReactorTileEntity extends BasicElectricMotorTileEntity 
 				}
 			}
 		}
-		return new List[] {Arrays.asList(new FluidStack[]{fluidTank.getLigthestFluid()}), this.input.getItemStackList()};
+		return new List[] {Arrays.asList(new FluidStack[]{fluidTank.getLightestFluid()}), this.input.getItemStackList()};
 	}
 
 	@Override

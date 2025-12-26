@@ -492,7 +492,7 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 			case PaperMachine:
 				return this.textureRightMachineCasing;
 			case LabElectrolyzer:
-				return this.textureRightMachineCasing;
+				return this.textureFrontChemicalReactor;
 			case FluidizedBedReactor:
 				return this.textureRightMachineCasing;
 			case ChemicalReactor:
@@ -519,7 +519,7 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 			case ChemicalReactor:
 				return this.textureLeftMachineCasing;
 			case LabElectrolyzer:
-				return this.textureLeftMachineCasing;
+				return this.textureFrontChemicalReactor;
 			case FluidizedBedReactor:
 				return this.textureLeftMachineCasing;
 			case DosingPump:

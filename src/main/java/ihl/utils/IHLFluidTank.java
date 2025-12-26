@@ -3,7 +3,6 @@ package ihl.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,9 +44,7 @@ public class IHLFluidTank implements IFluidTank {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		if (!fluidList.isEmpty()) {
 			NBTTagList fluids = new NBTTagList();
-			Iterator<FluidStack> fli = fluidList.iterator();
-			while (fli.hasNext()) {
-				FluidStack fluid = fli.next();
+			for (FluidStack fluid : fluidList) {
 				if (fluid != null) {
 					NBTTagCompound fluidNBT1 = new NBTTagCompound();
 					fluid.writeToNBT(fluidNBT1);
@@ -70,7 +67,7 @@ public class IHLFluidTank implements IFluidTank {
 		return this.fluidList.get(0);
 	}
 
-	public FluidStack getLigthestFluid() {
+	public FluidStack getLightestFluid() {
 		if (this.fluidList.isEmpty()) {
 			return IHLUtils.getFluidStackWithSize("air", this.capacity);
 		}
@@ -80,9 +77,7 @@ public class IHLFluidTank implements IFluidTank {
 	@Override
 	public int getFluidAmount() {
 		int amount = 0;
-		Iterator<FluidStack> fli = fluidList.iterator();
-		while (fli.hasNext()) {
-			FluidStack fluid = fli.next();
+		for (FluidStack fluid : fluidList) {
 			if (fluid != null) {
 				amount += fluid.amount;
 			}
@@ -123,6 +118,25 @@ public class IHLFluidTank implements IFluidTank {
 		return amount1;
 	}
 
+	public void fill(List<FluidStack> fluidOutputs, boolean doFill) {
+		if (fluidOutputs != null && !fluidOutputs.isEmpty()) {
+			for (FluidStack fluidOutput : fluidOutputs) {
+				this.fill(fluidOutput, doFill);
+			}
+		}
+	}
+
+
+
+	public FluidStack drainLightest(int maxDrain, boolean doDrain) {
+		if (fluidList.isEmpty()) {
+			return null;
+		}
+		FluidStack fstack = this.getLightestFluid().copy();
+		fstack.amount = maxDrain;
+		return this.drain(fstack, doDrain);
+	}
+
 	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
 		if (fluidList.isEmpty()) {
@@ -133,14 +147,6 @@ public class IHLFluidTank implements IFluidTank {
 		return this.drain(fstack, doDrain);
 	}
 
-	public FluidStack drainLightest(int maxDrain, boolean doDrain) {
-		if (fluidList.isEmpty()) {
-			return null;
-		}
-		FluidStack fstack = this.getLigthestFluid().copy();
-		fstack.amount = maxDrain;
-		return this.drain(fstack, doDrain);
-	}
 
 	public FluidStack drain(Object fluidStack, boolean doDrain) {
 		if (fluidList.isEmpty()) {
@@ -169,10 +175,39 @@ public class IHLFluidTank implements IFluidTank {
 		return stack;
 	}
 
+	public void drain(List<?> fluidInputs, boolean doDrain) {
+		if (fluidInputs != null && !fluidInputs.isEmpty()) {
+			for (Object fluidInput : fluidInputs) {
+				this.drain(fluidInput, doDrain);
+			}
+		}
+	}
+
+	public FluidStack drain(IRecipeInputFluid fluidStack, int amount, boolean doDrain) {
+		if (fluidList.isEmpty()) {
+			return null;
+		}
+		int drained = amount;
+		FluidStack fluid = this.getFluidStackWithSameFluid(fluidStack);
+		if (fluid == null) {
+			return null;
+		}
+		if (fluid.amount < drained) {
+			drained = fluid.amount;
+		}
+		FluidStack stack = copyWithSize(fluid, drained);
+		if (doDrain) {
+			fluid.amount -= drained;
+			if (fluid.amount <= 0) {
+				this.fluidList.remove(fluid);
+			}
+		}
+		return stack;
+	}
+
+
 	public FluidStack getFluidStackWithSameFluid(Object fluidStack) {
-		Iterator<FluidStack> fli = fluidList.iterator();
-		while (fli.hasNext()) {
-			FluidStack fluid = fli.next();
+		for (FluidStack fluid : fluidList) {
 			if (fluid != null) {
 				if (fluidStack instanceof FluidStack) {
 					if (fluid.isFluidEqual((FluidStack) fluidStack)) {
@@ -218,9 +253,7 @@ public class IHLFluidTank implements IFluidTank {
 	public void sortFluidsByDensity() {
 		Map<Integer, FluidStack> sortMap = new HashMap<Integer, FluidStack>();
 		int[] keysArray = new int[fluidList.size()];
-		Iterator<FluidStack> fli = fluidList.iterator();
-		while (fli.hasNext()) {
-			FluidStack fluid = fli.next();
+		for (FluidStack fluid : fluidList) {
 			if (fluid == null) {
 				return;
 			}
@@ -259,23 +292,9 @@ public class IHLFluidTank implements IFluidTank {
 		return this.fluidList;
 	}
 
-	public void drain(List<?> fluidInputs, boolean doDrain) {
-		if (fluidInputs != null && !fluidInputs.isEmpty()) {
-			Iterator<?> fsi = fluidInputs.iterator();
-			while (fsi.hasNext()) {
-				this.drain(fsi.next(), doDrain);
-			}
-		}
-	}
 
-	public void fill(List<FluidStack> fluidOutputs, boolean doFill) {
-		if (fluidOutputs != null && !fluidOutputs.isEmpty()) {
-			Iterator<FluidStack> fsi = fluidOutputs.iterator();
-			while (fsi.hasNext()) {
-				this.fill(fsi.next(), doFill);
-			}
-		}
-	}
+
+
 
 	private FluidStack copyWithSize(FluidStack resource, int amount1) {
 		FluidStack fluid = resource.copy();
@@ -286,37 +305,11 @@ public class IHLFluidTank implements IFluidTank {
 		return fluid;
 	}
 
-	public FluidStack drain(IRecipeInputFluid fluidStack, int amount, boolean doDrain) {
-		if (fluidList.isEmpty()) {
-			return null;
-		}
-		int drained = amount;
-		FluidStack fluid = this.getFluidStackWithSameFluid(fluidStack);
-		if (fluid == null) {
-			return null;
-		}
-		if (fluid.amount < drained) {
-			drained = fluid.amount;
-		}
-		FluidStack stack = copyWithSize(fluid, drained);
-		if (doDrain) {
-			fluid.amount -= drained;
-			if (fluid.amount <= 0) {
-				this.fluidList.remove(fluid);
-			}
-		}
-		return stack;
-	}
+
 
 	public void checkCorrectState() {
 		if (!this.fluidList.isEmpty()) {
-			Iterator<FluidStack> fsi = this.fluidList.iterator();
-			while (fsi.hasNext()) {
-				FluidStack fs = fsi.next();
-				if (fs.amount <= 0) {
-					fsi.remove();
-				}
-			}
+			this.fluidList.removeIf(fs -> fs.amount <= 0);
 		}
 	}
 }

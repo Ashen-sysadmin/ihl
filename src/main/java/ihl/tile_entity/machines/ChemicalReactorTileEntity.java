@@ -13,6 +13,7 @@ import ic2.core.block.invslot.InvSlotConsumableLiquid;
 import ic2.core.block.invslot.InvSlotOutput;
 import ihl.container.ChemicalReactorContainer;
 import ihl.gui.ChemicalReactorGui;
+import ihl.interfaces.IIHLFluidHandler;
 import ihl.processing.chemistry.ApparatusProcessableInvSlot;
 import ihl.processing.invslots.IHLInvSlotOutput;
 import ihl.processing.invslots.InvSlotConsumableLiquidIHL;
@@ -32,7 +33,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class ChemicalReactorTileEntity extends BasicElectricMotorTileEntity implements IFluidHandler
+public class ChemicalReactorTileEntity extends BasicElectricMotorTileEntity implements IIHLFluidHandler
 {
 	private final static UniversalRecipeManager recipeManager = new UniversalRecipeManager("chemicalreactor");
     public final ApparatusProcessableInvSlot input;
@@ -92,6 +93,7 @@ public class ChemicalReactorTileEntity extends BasicElectricMotorTileEntity impl
    		IHLUtils.handleFluidSlotsBehaviour(fillInputSlot, drainInputSlot, emptyFluidItemsSlot, fluidTank);
     }
 
+	/*IFluidHandler*/
     @Override
     public FluidStack drain(ForgeDirection from, int amount, boolean doDrain)
     {
@@ -114,7 +116,55 @@ public class ChemicalReactorTileEntity extends BasicElectricMotorTileEntity impl
     	}
     }
 
-    //1.7.10 API
+
+	@Override
+	public FluidStack drain(ForgeDirection arg0, FluidStack fluidStack, boolean doDrain) {
+		if(fluidTank.getFluid()!=null && fluidTank.getFluid().containsFluid(fluidStack))
+		{
+			return this.fluidTank.drain(fluidStack, doDrain);
+		}
+		return null;
+	}
+
+	@Override
+	public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
+		return this.fluidTank.fill(arg1, arg2);
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection arg0) {
+		return new FluidTankInfo[] {this.fluidTank.getInfo()};
+	}
+
+	public boolean needsFluid()
+	{
+		return this.fluidTank.getFluidAmount() <= this.fluidTank.getCapacity();
+	}
+
+	public FluidStack getFluidStackfromTank()
+	{
+		return this.fluidTank.getFluid();
+	}
+
+	public int getTankAmount()
+	{
+		return this.fluidTank.getFluidAmount();
+	}
+
+	public int gaugeLiquidScaled(int i, int index)
+	{
+		return this.fluidTank.getFluidAmount() <= 0 ? 0 : this.fluidTank.getFluidAmount(index) * i / this.fluidTank.getCapacity();
+	}
+	public static void addRecipe(UniversalRecipeInput input, UniversalRecipeOutput output)
+	{
+		recipeManager.addRecipe(input, output);
+	}
+
+	public int getNumberOfFluidsInTank()
+	{
+		return this.fluidTank.getNumberOfFluids();
+	}
+
 	@Override
 	public boolean canDrain(ForgeDirection arg0, Fluid arg1) {
 		return true;
@@ -124,6 +174,13 @@ public class ChemicalReactorTileEntity extends BasicElectricMotorTileEntity impl
 	public boolean canFill(ForgeDirection direction, Fluid arg1) {
 		return true;
 	}
+
+	public IHLFluidTank getFluidTank()
+	{
+		return this.fluidTank;
+	}
+
+    //1.7.10 API
 
 	@Override
 	public String getInventoryName() {
@@ -225,54 +282,6 @@ public class ChemicalReactorTileEntity extends BasicElectricMotorTileEntity impl
 		this.outputSlot.add(output1.getItemOutputs());
 	}
 
-	@Override
-	public FluidStack drain(ForgeDirection arg0, FluidStack fluidStack, boolean doDrain) {
-		if(fluidTank.getFluid()!=null && fluidTank.getFluid().containsFluid(fluidStack))
-		{
-			return this.fluidTank.drain(fluidStack, doDrain);
-		}
-		return null;
-	}
-
-	@Override
-	public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
-		return this.fluidTank.fill(arg1, arg2);
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection arg0) {
-		return new FluidTankInfo[] {this.fluidTank.getInfo()};
-	}
-
-    public boolean needsFluid()
-    {
-        return this.fluidTank.getFluidAmount() <= this.fluidTank.getCapacity();
-    }
-
-    public FluidStack getFluidStackfromTank()
-    {
-    	return this.fluidTank.getFluid();
-    }
-
-	public int getTankAmount()
-	{
-		return this.fluidTank.getFluidAmount();
-	}
-
-    public int gaugeLiquidScaled(int i, int index)
-    {
-        return this.fluidTank.getFluidAmount() <= 0 ? 0 : this.fluidTank.getFluidAmount(index) * i / this.fluidTank.getCapacity();
-    }
-	public static void addRecipe(UniversalRecipeInput input, UniversalRecipeOutput output)
-	{
-		recipeManager.addRecipe(input, output);
-	}
-
-	public int getNumberOfFluidsInTank()
-	{
-		return this.fluidTank.getNumberOfFluids();
-	}
-
 	public static Map<UniversalRecipeInput, UniversalRecipeOutput> getRecipes() {
 		return recipeManager.getRecipes();
 	}
@@ -285,11 +294,6 @@ public class ChemicalReactorTileEntity extends BasicElectricMotorTileEntity impl
 	public static void addSpecialConditionsRecipe(FluidStack fluidStackInput1, FluidStack fluidStackInput2, ItemStack itemStackInput, FluidStack fluidStackOutput, ItemStack itemStackOutput1, ItemStack itemStackOutput2)
 	{
 		addRecipe(new UniversalRecipeInput((new FluidStack[] {fluidStackInput1, fluidStackInput2}), (new ItemStack[] {itemStackInput})), new UniversalRecipeOutput((new FluidStack[] {fluidStackOutput}), (new ItemStack[] {itemStackOutput1, itemStackOutput2}),200, true));
-	}
-
-	public IHLFluidTank getFluidTank()
-	{
-		return this.fluidTank;
 	}
 
 }

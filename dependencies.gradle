@@ -35,6 +35,9 @@
  */
 dependencies {
 	runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.6.34-GTNH:dev")
+	runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.11-pre:dev") {transitive=false}
+	runtimeOnlyNonPublishable('curse.maven:cofh-lib-220333:2388748') // https://www.curseforge.com/minecraft/mc-mods/cofh-lib/files/2388748
+	runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderCore:0.5.2-pre:dev" )
 	implementation 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev'
 	compileOnly 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:src'
 	implementation 'net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev'

@@ -92,10 +92,10 @@ public class CryogenicDistillerTileEntity extends BasicElectricMotorTileEntity i
 		this.fluidTankProducts.fill(getOutput().getFluidOutputs(), true);
 		this.fluidTankInput.drain(ri.getFluidInputs().get(0), true);
 		TileEntity teOnTop = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-		if (teOnTop instanceof IFluidHandler && this.fluidTankProducts.getLigthestFluid() != null) {
+		if (teOnTop instanceof IFluidHandler && this.fluidTankProducts.getLightestFluid() != null) {
 			IFluidHandler topFH = (IFluidHandler) teOnTop;
-			if (topFH.canFill(ForgeDirection.DOWN, this.fluidTankProducts.getLigthestFluid().getFluid())) {
-				FluidStack fsToDrain = this.fluidTankProducts.getLigthestFluid().copy();
+			if (topFH.canFill(ForgeDirection.DOWN, this.fluidTankProducts.getLightestFluid().getFluid())) {
+				FluidStack fsToDrain = this.fluidTankProducts.getLightestFluid().copy();
 				fsToDrain.amount = topFH.fill(ForgeDirection.DOWN, fsToDrain, true);
 				this.fluidTankProducts.drain(fsToDrain, true);
 			}
@@ -120,7 +120,7 @@ public class CryogenicDistillerTileEntity extends BasicElectricMotorTileEntity i
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List[] getInput() {
-		return new List[] { Arrays.asList(new FluidStack[] { this.fluidTankInput.getLigthestFluid() }), null };
+		return new List[] { Arrays.asList(new FluidStack[] { this.fluidTankInput.getLightestFluid() }), null };
 	}
 
 	@Override

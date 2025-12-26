@@ -106,7 +106,7 @@ public class ImpregnatingMachineTileEntity extends TileEntityInventory implement
     {
         if(this.fluidTank.getFluid()!=null)
         {
-        	if(this.fluidTank.getLigthestFluid().getFluid().isGaseous())
+        	if(this.fluidTank.getLightestFluid().getFluid().isGaseous())
         	{
             	this.fluidTank.drainLightest(10, true);
         	}

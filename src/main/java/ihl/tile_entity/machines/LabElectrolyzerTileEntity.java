@@ -199,10 +199,18 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 
 	@Override
 	public FluidStack drain(ForgeDirection direction, FluidStack fluidStack, boolean doDrain) {
-		if (this.fluidTankAnodeOutput.getFluid().containsFluid(fluidStack)) {
-			return this.fluidTankAnodeOutput.drain(fluidStack.amount, doDrain);
-		} else if (this.fluidTankCathodeOutput.getFluid().containsFluid(fluidStack)) {
-			return this.fluidTankCathodeOutput.drain(fluidStack.amount, doDrain);
+		if (fluidStack != null) {
+			if (direction.equals(ForgeDirection.getOrientation(this.getFacing()).getRotation(ForgeDirection.UP))) {
+				FluidStack anode = this.fluidTankAnodeOutput.getFluid();
+				if (anode != null && anode.isFluidEqual(fluidStack)) {
+					return this.fluidTankAnodeOutput.drain(fluidStack.amount, doDrain);
+				}
+			} else if (direction.equals(ForgeDirection.getOrientation(this.getFacing()).getRotation(ForgeDirection.DOWN))) {
+				FluidStack cathode = this.fluidTankCathodeOutput.getFluid();
+				if (cathode != null && cathode.isFluidEqual(fluidStack)) {
+					return this.fluidTankCathodeOutput.drain(fluidStack.amount, doDrain);
+				}
+			}
 		}
 		return null;
 	}
