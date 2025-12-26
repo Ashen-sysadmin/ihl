@@ -170,14 +170,33 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
 	public List<PositionedStack> getAdditionalIngredients() {
 		return null;
 	}
+	@Override
+	public void loadUsageRecipes(String inputId, Object... ingredients){
+
+		if (inputId.equals("liquid") && ingredients[0] instanceof FluidStack) {
+			FluidStack fluidStack = (FluidStack) ingredients[0];
+			if (fluidStack.getFluid() != null) {
+				for (Entry<UniversalRecipeInput, UniversalRecipeOutput> entry : this.getRecipeList().entrySet()) {
+					if (((UniversalRecipeInput) entry.getKey()).containFluidStack(fluidStack)) {
+						this.arecipes.add(new CachedIORecipe(entry.getKey(), entry.getValue(),
+							getAdditionalIngredients()));
+					}
+				}
+			}
+		} else {
+			super.loadUsageRecipes(inputId,ingredients);
+		}
+	}
 
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
-		Iterator<Entry<UniversalRecipeInput, UniversalRecipeOutput>> i$ = this.getRecipeList().entrySet().iterator();
+
 		FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(ingredient);
 		if (fluidStack == null && ingredient.getItem() instanceof IFluidContainerItem) {
 			IFluidContainerItem ifc = (IFluidContainerItem) ingredient.getItem();
-			fluidStack = ifc.getFluid(ingredient);
+			if (ifc != null) {
+				fluidStack = ifc.getFluid(ingredient);
+			}
 		} else if (ingredient.getItem() instanceof ItemBlock) {
 			Block blockfluid = ((ItemBlock) ingredient.getItem()).field_150939_a;
 			if (blockfluid instanceof BlockFluidBase) {
@@ -189,19 +208,17 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
 		}
 
 		if (fluidStack != null && fluidStack.getFluid() != null) {
-			while (i$.hasNext()) {
-				Entry<UniversalRecipeInput, UniversalRecipeOutput> entry = i$.next();
+			for (Entry<UniversalRecipeInput, UniversalRecipeOutput> entry : this.getRecipeList().entrySet()) {
 				if (((UniversalRecipeInput) entry.getKey()).containFluidStack(fluidStack)) {
-					this.arecipes.add(new MachineRecipeHandler.CachedIORecipe(entry.getKey(), entry.getValue(),
-							getAdditionalIngredients()));
+					this.arecipes.add(new CachedIORecipe(entry.getKey(), entry.getValue(),
+						getAdditionalIngredients()));
 				}
 			}
 		} else {
-			while (i$.hasNext()) {
-				Entry<UniversalRecipeInput, UniversalRecipeOutput> entry = i$.next();
+			for (Entry<UniversalRecipeInput, UniversalRecipeOutput> entry : this.getRecipeList().entrySet()) {
 				if (((UniversalRecipeInput) entry.getKey()).containItemStack(ingredient)) {
-					this.arecipes.add(new MachineRecipeHandler.CachedIORecipe(entry.getKey(), entry.getValue(),
-							getAdditionalIngredients()));
+					this.arecipes.add(new CachedIORecipe(entry.getKey(), entry.getValue(),
+						getAdditionalIngredients()));
 				}
 			}
 		}
@@ -271,18 +288,14 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
 				ArrayList<List<ItemStack>> items = new ArrayList<List<ItemStack>>();
 				ArrayList<List<FluidStack>> fluidItems = new ArrayList<List<FluidStack>>();
 				if (input.getFluidInputs() != null && !input.getFluidInputs().isEmpty()) {
-					Iterator<?> i = input.getFluidInputs().iterator();
-					while (i.hasNext()) {
-						IRecipeInputFluid fstackRI = (IRecipeInputFluid) i.next();
+					for (IRecipeInputFluid fstackRI : input.getFluidInputs()) {
 						List<FluidStack> fstackList = fstackRI.getInputs();
 						fluidItems.add(fstackList);
 					}
 				}
 
 				if (input.getItemInputs() != null && !input.getItemInputs().isEmpty()) {
-					Iterator<?> i = input.getItemInputs().iterator();
-					while (i.hasNext()) {
-						IRecipeInput rInput = (IRecipeInput) i.next();
+					for (IRecipeInput rInput : input.getItemInputs()) {
 						Iterator<ItemStack> rInputsi = rInput.getInputs().iterator();
 						List<ItemStack> itemInputs = new ArrayList<ItemStack>();
 						while (rInputsi.hasNext()) {

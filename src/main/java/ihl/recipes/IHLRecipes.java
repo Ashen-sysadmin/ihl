@@ -1282,17 +1282,17 @@ public class IHLRecipes {
 		ImpregnatingMachineTileEntity.addQuenchingRecipe("drillSteelHot", "drillSteelHardened");
 		ImpregnatingMachineTileEntity.addQuenchingRecipe("sawBladeSteelHot", "sawBladeSteelHardened");
 		ImpregnatingMachineTileEntity.addRecipe(
-			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("oleicacid", 100) }),
+			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("oleicacid", 10) }),
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteHot") })),
 			new UniversalRecipeOutput(null,
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 20));
 		ImpregnatingMachineTileEntity.addRecipe(
-			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("seedoil", 100) }),
+			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("seedoil", 10) }),
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteHot") })),
 			new UniversalRecipeOutput(null,
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 20));
 		ImpregnatingMachineTileEntity.addRecipe(
-			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("mineraloil", 100) }),
+			new UniversalRecipeInput((new FluidStack[] { IHLUtils.getFluidStackWithSize("mineraloil", 10) }),
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteHot") })),
 			new UniversalRecipeOutput(null,
 				(new ItemStack[] { IHLUtils.getThisModItemStack("linerIronGraphiteGreased") }), 20));
