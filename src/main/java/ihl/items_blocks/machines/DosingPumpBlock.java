@@ -40,7 +40,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import net.minecraft.block.BlockDispenser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +63,7 @@ public class DosingPumpBlock extends Block implements ITileEntityProvider {
 
 	@Override //TODO Rewrite
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		if (!world.isRemote) {
+
 			boolean isPowered = world.isBlockIndirectlyGettingPowered(x, y, z);
 			int metadata = world.getBlockMetadata(x, y, z);
 			boolean latch = (metadata & 8) != 0;
@@ -75,7 +74,7 @@ public class DosingPumpBlock extends Block implements ITileEntityProvider {
 			} else if (!isPowered && latch) {
 				world.setBlockMetadataWithNotify(x, y, z, metadata & -9, 4);
 			}
-		}
+
 
 	}
 
@@ -187,17 +186,16 @@ public class DosingPumpBlock extends Block implements ITileEntityProvider {
 	 * Called when the block is placed in the world.
 	 */
 
-	@Override
+	@Override //TODO I need to find where facing is getting overwritten
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn)
 	{
-		if (!world.isRemote) {
-			short l = (short) BlockPistonBase.determineOrientation(world, x, y, z, placer);
-			TileEntity t = world.getTileEntity(x, y, z);
-			if (t instanceof IWrenchable) {
-				((IWrenchable) t).setFacing(
-					l
-				);
-			}
+		short l = (short) BlockPistonBase.determineOrientation(world, x, y, z, placer);
+		TileEntity t = world.getTileEntity(x, y, z);
+
+		if (t instanceof IWrenchable) {
+			((IWrenchable) t).setFacing(
+				l
+			);
 		}
 	}
 

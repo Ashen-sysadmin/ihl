@@ -48,13 +48,13 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 		this.energyConsume *= 10;
 		this.outputSlot = new IHLInvSlotOutput(this, "output", 0, 2);
 		this.drainInputSlot = new InvSlotConsumableLiquidIHL(this, "drainInput", -1, InvSlot.Access.I, 1,
-				InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Drain);
+			InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Drain);
 		this.fillInputSlot = new InvSlotConsumableLiquidIHL(this, "fillInput", -1, InvSlot.Access.I, 1,
-				InvSlot.InvSide.BOTTOM, InvSlotConsumableLiquid.OpType.Fill);
+			InvSlot.InvSide.BOTTOM, InvSlotConsumableLiquid.OpType.Fill);
 		this.fillInputSlotAnodeOutput = new InvSlotConsumableLiquidIHL(this, "fillInputAnodeOutput", -1,
-				InvSlot.Access.I, 1, InvSlot.InvSide.BOTTOM, InvSlotConsumableLiquid.OpType.Fill);
+			InvSlot.Access.I, 1, InvSlot.InvSide.BOTTOM, InvSlotConsumableLiquid.OpType.Fill);
 		this.fillInputSlotCathodeOutput = new InvSlotConsumableLiquidIHL(this, "fillInputCathodeOutput", -1,
-				InvSlot.Access.I, 1, InvSlot.InvSide.BOTTOM, InvSlotConsumableLiquid.OpType.Fill);
+			InvSlot.Access.I, 1, InvSlot.InvSide.BOTTOM, InvSlotConsumableLiquid.OpType.Fill);
 		this.emptyFluidItemsSlot = new InvSlotOutput(this, "fluidCellsOutput", 2, 3);
 	}
 
@@ -103,7 +103,7 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 		IHLUtils.handleFluidSlotsBehaviour(fillInputSlot, drainInputSlot, emptyFluidItemsSlot, fluidTank);
 		IHLUtils.handleFluidSlotsBehaviour(fillInputSlotAnodeOutput, null, emptyFluidItemsSlot, fluidTankAnodeOutput);
 		IHLUtils.handleFluidSlotsBehaviour(fillInputSlotCathodeOutput, null, emptyFluidItemsSlot,
-				fluidTankCathodeOutput);
+			fluidTankCathodeOutput);
 	}
 
 	@Override
@@ -124,8 +124,8 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 	@Override
 	public boolean canDrain(ForgeDirection direction, Fluid arg1) {
 		return direction.equals(ForgeDirection.getOrientation(this.getFacing()).getRotation(ForgeDirection.UP))
-				|| direction.equals(ForgeDirection.getOrientation(this.getFacing()).getRotation(ForgeDirection.DOWN))
-				|| direction.equals(ForgeDirection.DOWN);
+			|| direction.equals(ForgeDirection.getOrientation(this.getFacing()).getRotation(ForgeDirection.DOWN))
+			|| direction.equals(ForgeDirection.DOWN);
 	}
 
 	@Override
@@ -164,11 +164,11 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 		UniversalRecipeOutput output = getOutput();
 		if (output != null) {
 			if (getOutput().getItemOutputs() != null && !getOutput().getItemOutputs().isEmpty()
-					&& getOutput().getItemOutputs().get(0) != null) {
+				&& getOutput().getItemOutputs().get(0) != null) {
 				return this.outputSlot.canAdd(getOutput().getItemOutputs());
 			} else {
 				return this.fluidTankAnodeOutput.getFluidAmount() < this.fluidTankAnodeOutput.getCapacity()
-						&& this.fluidTankAnodeOutput.getFluidAmount() < this.fluidTankCathodeOutput.getCapacity();
+					&& this.fluidTankAnodeOutput.getFluidAmount() < this.fluidTankCathodeOutput.getCapacity();
 			}
 		}
 		return false;
@@ -199,18 +199,10 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 
 	@Override
 	public FluidStack drain(ForgeDirection direction, FluidStack fluidStack, boolean doDrain) {
-		if (fluidStack != null) {
-			if (direction.equals(ForgeDirection.getOrientation(this.getFacing()).getRotation(ForgeDirection.UP))) {
-				FluidStack anode = this.fluidTankAnodeOutput.getFluid();
-				if (anode != null && anode.isFluidEqual(fluidStack)) {
-					return this.fluidTankAnodeOutput.drain(fluidStack.amount, doDrain);
-				}
-			} else if (direction.equals(ForgeDirection.getOrientation(this.getFacing()).getRotation(ForgeDirection.DOWN))) {
-				FluidStack cathode = this.fluidTankCathodeOutput.getFluid();
-				if (cathode != null && cathode.isFluidEqual(fluidStack)) {
-					return this.fluidTankCathodeOutput.drain(fluidStack.amount, doDrain);
-				}
-			}
+		if (this.fluidTankAnodeOutput.getFluid().containsFluid(fluidStack)) {
+			return this.fluidTankAnodeOutput.drain(fluidStack.amount, doDrain);
+		} else if (this.fluidTankCathodeOutput.getFluid().containsFluid(fluidStack)) {
+			return this.fluidTankCathodeOutput.drain(fluidStack.amount, doDrain);
 		}
 		return null;
 	}
@@ -246,7 +238,7 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 
 	public int gaugeLiquidScaled(int i, int index) {
 		return this.fluidTank.getFluidAmount() <= 0 ? 0
-				: this.fluidTank.getFluidAmount(index) * i / this.fluidTank.getCapacity();
+			: this.fluidTank.getFluidAmount(index) * i / this.fluidTank.getCapacity();
 	}
 
 	public static void addRecipe(UniversalRecipeInput input, UniversalRecipeOutput output) {
@@ -262,15 +254,15 @@ public class LabElectrolyzerTileEntity extends BasicElectricMotorTileEntity impl
 	}
 
 	public static void addRecipe(FluidStack fluidStackInput1, FluidStack fluidStackOutputAnode,
-			FluidStack fluidStackOutputCathode, ItemStack itemStackOutput1) {
+								 FluidStack fluidStackOutputCathode, ItemStack itemStackOutput1) {
 		if (itemStackOutput1 != null) {
 			addRecipe(new UniversalRecipeInput((new FluidStack[] { fluidStackInput1 }), null),
-					new UniversalRecipeOutput((new FluidStack[] { fluidStackOutputAnode, fluidStackOutputCathode }),
-							(new ItemStack[] { itemStackOutput1 }), 200));
+				new UniversalRecipeOutput((new FluidStack[] { fluidStackOutputAnode, fluidStackOutputCathode }),
+					(new ItemStack[] { itemStackOutput1 }), 200));
 		} else {
 			addRecipe(new UniversalRecipeInput((new FluidStack[] { fluidStackInput1 }), null),
-					new UniversalRecipeOutput((new FluidStack[] { fluidStackOutputAnode, fluidStackOutputCathode }),
-							null, 200));
+				new UniversalRecipeOutput((new FluidStack[] { fluidStackOutputAnode, fluidStackOutputCathode }),
+					null, 200));
 		}
 	}
 

@@ -159,7 +159,9 @@ public class DosingPumpTileEntity extends DecoupledElectricTileEntity implements
 			newMeta,
 			2
 		);
-		super.setFacing(facing1);
+		if (IC2.platform.isSimulating()) {
+			super.setFacing(facing1);
+		}
 	}
 
 
