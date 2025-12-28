@@ -1,14 +1,18 @@
 package ihl.tile_entity.machines;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.tile.IWrenchable;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.block.invslot.InvSlot;
 import ic2.core.block.invslot.InvSlotConsumableLiquid;
 import ic2.core.block.invslot.InvSlotOutput;
+import ic2.core.network.NetworkManager;
 import ihl.gui.DosingPumpGui;
 import ihl.container.DosingPumpContainer;
 import ihl.processing.invslots.InvSlotConsumableLiquidIHL;
@@ -25,7 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class DosingPumpTileEntity extends BasicElectricMotorTileEntity implements IFluidHandler {
+public class DosingPumpTileEntity extends DecoupledElectricTileEntity implements IFluidHandler, IWrenchable {
 	public final InvSlotConsumableLiquidIHL drainInputSlot;
 	public final InvSlotConsumableLiquidIHL fillInputSlot;
 	public final InvSlotOutput emptyFluidItemsSlot;
@@ -84,22 +88,13 @@ public class DosingPumpTileEntity extends BasicElectricMotorTileEntity implement
 	@Override
 	public FluidStack drain(ForgeDirection from, int amount, boolean doDrain) {
 		switch (from) {
-		case UP:
+		case UP, EAST, WEST, SOUTH, NORTH:
 			return this.fluidTank.drainLightest(amount, doDrain);
-		case NORTH:
-			return this.fluidTank.drainLightest(amount, doDrain);
-		case SOUTH:
-			return this.fluidTank.drainLightest(amount, doDrain);
-		case WEST:
-			return this.fluidTank.drainLightest(amount, doDrain);
-		case EAST:
-			return this.fluidTank.drainLightest(amount, doDrain);
-		case DOWN:
-			return this.fluidTank.drain(amount, doDrain);
-		default:
+			default:
 			return this.fluidTank.drain(amount, doDrain);
 		}
 	}
+
 
 	// 1.7.10 API
 	@Override
@@ -148,23 +143,52 @@ public class DosingPumpTileEntity extends BasicElectricMotorTileEntity implement
 	}
 
 	@Override
+	public short getFacing() {
+		return  (short)(this.getBlockMetadata() & 7);
+	}
+
+	@Override
+	public void setFacing(short facing1) {
+		if (this.worldObj == null) return;
+
+		int meta = this.getBlockMetadata();
+		int newMeta = (meta & ~7) | (facing1 & 7);
+
+		this.worldObj.setBlockMetadataWithNotify(
+			this.xCoord, this.yCoord, this.zCoord,
+			newMeta,
+			2
+		);
+		super.setFacing(facing1);
+	}
+
+
+	@Override
 	public void operate() {
 		int fluidAmountToDrain = fluidAmountSetpoint;
 		ForgeDirection dir = ForgeDirection.getOrientation(this.getFacing());
 		TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 		if (te instanceof IFluidHandler) {
-			IFluidHandler fhte = (IFluidHandler) te;
-			for (int i = 0; i < this.fluidTank.getNumberOfFluids(); i++) {
-				FluidStack drained = this.fluidTank.drain(fluidAmountToDrain, true);
-				fluidAmountToDrain -= drained.amount;
-				if (fhte.canFill(dir, drained.getFluid())) {
-					fhte.fill(dir, drained, true);
-				}
+			IFluidHandler otherFluidTank = (IFluidHandler) te;
+			Iterator<FluidStack> iterator = this.fluidTank.getFluidIterator();
+			FluidStack outputStack;
+			while (iterator.hasNext()) {
+				int amountAccepted = 0;
+				FluidStack provisionedStack = iterator.next();
+				outputStack = provisionedStack.copy();
+				outputStack.amount = Math.min(provisionedStack.amount,fluidAmountToDrain);
+				amountAccepted = otherFluidTank.fill(dir.getOpposite(), outputStack, true);
+
+				if (amountAccepted <= 0) continue;
+				provisionedStack.amount -= amountAccepted;
+				if (provisionedStack.amount <= 0) iterator.remove();
+				fluidAmountToDrain -= amountAccepted;
 				if (fluidAmountToDrain <= 0) {
 					break;
 				}
 			}
 		}
+		//All pump attempts consume power
 		this.energy-=this.energyConsume/10;
 	}
 
@@ -216,6 +240,13 @@ public class DosingPumpTileEntity extends BasicElectricMotorTileEntity implement
 		return null;
 	}
 
+	public void trigger(){
+		if (this.energy > this.energyConsume/10) {
+			this.operate();
+		}
+	}
+
+	@Deprecated
 	public void setPowered(boolean isPowered) {
 		if (prevIsPowered != isPowered && this.tickFree){
 			this.tickFree = false;

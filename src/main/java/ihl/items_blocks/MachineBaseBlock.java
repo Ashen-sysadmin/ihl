@@ -97,12 +97,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		if (IC2.platform.isSimulating()) {
 			TileEntity te = world.getTileEntity(x, y, z);
-			boolean isPowered = world.isBlockIndirectlyGettingPowered(x, y, z);
-			if (te instanceof DosingPumpTileEntity) {
-				DosingPumpTileEntity dpte = (DosingPumpTileEntity) te;
-				dpte.setPowered(isPowered);
-			}
-
 			if (world.getBlock(x, y + 1, z) == Blocks.fire) {
 				if (te instanceof DetonationSprayingMachineTileEntity) {
 					((DetonationSprayingMachineTileEntity) te).operate();
@@ -243,11 +237,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 		this.greenPaint = par1IconRegister.registerIcon(IHLModInfo.MODID + ":greenPaint");
 		this.rubberInsulatedCase = par1IconRegister.registerIcon(IHLModInfo.MODID + ":rubberInsulatedCase");
 		this.powerPort = par1IconRegister.registerIcon(IHLModInfo.MODID + ":powerPort");
-		this.dosingPumpBack = par1IconRegister.registerIcon(IHLModInfo.MODID + ":dosingPumpBack");
-		this.dosingPumpLeftSide = par1IconRegister.registerIcon(IHLModInfo.MODID + ":dosingPumpLeft");
-		this.dosingPumpRightSide = par1IconRegister.registerIcon(IHLModInfo.MODID + ":dosingPumpRight");
-		this.dosingPumpTop = par1IconRegister.registerIcon(IHLModInfo.MODID + ":dosingPumpTop");
-		this.dosingPumpFront = par1IconRegister.registerIcon(IHLModInfo.MODID + ":dosingPumpFront");
 		this.solarEvaporatorSide = par1IconRegister.registerIcon(IHLModInfo.MODID + ":solarEvaporatorSide");
 	}
 
@@ -313,9 +302,11 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 	 */
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
-		TileEntity t = world.getTileEntity(x, y, z);
-		if (t != null && t instanceof IWrenchable) {
-			((IWrenchable) t).setFacing(IHLUtils.getFacingFromPlayerView(player, false));
+		if (IC2.platform.isSimulating()) {
+			TileEntity t = world.getTileEntity(x, y, z);
+			if (t != null && t instanceof IWrenchable) {
+				((IWrenchable) t).setFacing(IHLUtils.getFacingFromPlayerView(player, false));
+			}
 		}
 	}
 
@@ -394,8 +385,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 				return this.textureFrontCryogenicDistiller;
 			case PaperMachine:
 				return this.textureFrontPaperMachine;
-			case DosingPump:
-				return this.dosingPumpFront;
 			default:
 				break;
 			}
@@ -419,8 +408,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 				return this.textureBackCryogenicDistiller;
 			case ChemicalReactor:
 				return this.textureBackCryogenicDistiller;
-			case DosingPump:
-				return this.dosingPumpBack;
 			default:
 				return this.textureBack;
 			}
@@ -445,8 +432,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 				return this.textureBackMachineCasing;
 			case ChemicalReactor:
 				return this.textureBackMachineCasing;
-			case DosingPump:
-				return this.dosingPumpBack;
 			default:
 				return this.textureTop;
 			}
@@ -473,8 +458,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 				return this.textureTopMachineCasing;
 			case ChemicalReactor:
 				return this.textureTopMachineCasing;
-			case DosingPump:
-				return this.dosingPumpTop;
 			default:
 				return this.textureTop;
 			}
@@ -498,8 +481,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 				return this.textureRightMachineCasing;
 			case ChemicalReactor:
 				return this.textureRightMachineCasing;
-			case DosingPump:
-				return this.dosingPumpRightSide;
 			default:
 				return this.textureSide;
 			}
@@ -523,8 +504,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 				return this.textureFrontChemicalReactor;
 			case FluidizedBedReactor:
 				return this.textureLeftMachineCasing;
-			case DosingPump:
-				return this.dosingPumpLeftSide;
 			default:
 				return this.textureSide;
 			}
@@ -550,7 +529,6 @@ public class MachineBaseBlock extends Block implements ITileEntityProvider {
 
 	public enum MachineType {
 		SolarEvaporator("solarEvaporator", SolarEvaporatorTileEntity.class, false, true, null),
-		DosingPump("dosingPump", DosingPumpTileEntity.class, true, null),
 		IronWorkbench("ironWorkbench", IronWorkbenchTileEntity.class, false, true, null),
 		ElectrolysisBath("electrolysisBath", ElectrolysisBathTileEntity.class, false, IHLUtils
 				.getThisModItemStack("plateGraphite")),

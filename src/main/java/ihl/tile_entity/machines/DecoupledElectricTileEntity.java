@@ -1,14 +1,12 @@
 package ihl.tile_entity.machines;
 
-import java.util.Iterator;
-import java.util.List;
-
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
 import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
+import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
 import ic2.core.block.invslot.InvSlot.Access;
 import ihl.IHLMod;
@@ -17,14 +15,18 @@ import ihl.flexible_cable.NodeEntity;
 import ihl.processing.invslots.InvSlotUpgradeIHL;
 import ihl.utils.IHLInvSlotDischarge;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class BasicElectricMotorTileEntity extends FlexibleCableHolderBaseTileEntity
-		implements IHasGui, INetworkClientTileEntityEventListener, IEnergySink {
+import java.util.Iterator;
+import java.util.List;
+
+public abstract class DecoupledElectricTileEntity extends TileEntityInventory
+		implements IHasGui, INetworkClientTileEntityEventListener, IEnergySink, ISidedInventory {
 
 	public final IHLInvSlotDischarge dischargeSlot;
 	public final InvSlotUpgradeIHL upgradeSlot;
@@ -35,7 +37,7 @@ public abstract class BasicElectricMotorTileEntity extends FlexibleCableHolderBa
 	public int maxStorage = 128;
 	private boolean addedToEnergyNet = false;
 
-	public BasicElectricMotorTileEntity() {
+	public DecoupledElectricTileEntity() {
 		super();
 		energyConsume = IHLMod.config.machineryEnergyConsume/100d;
 		dischargeSlot = new IHLInvSlotDischarge(this, 1, Access.I, 4, InvSlot.InvSide.BOTTOM);
@@ -70,62 +72,12 @@ public abstract class BasicElectricMotorTileEntity extends FlexibleCableHolderBa
 		super.onUnloaded();
 	}
 
+
 	@Override
 	public void setFacing(short facing1) {
-		double d = 0.3D;
-		double f = -0.1D;
-		if (IC2.platform.isSimulating() && this.addedToEnergyNet) {
-			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-			this.addedToEnergyNet = false;
-		}
-		double range = 2D;
-		AxisAlignedBB searchArea = AxisAlignedBB.getBoundingBox(connectionX - range, connectionY - range,
-				connectionZ - range, connectionX + range, connectionY + range, connectionZ + range);
-		List<NodeEntity> nodeList = worldObj.getEntitiesWithinAABB(NodeEntity.class, searchArea);
 		super.setFacing(facing1);
-		switch (getFacing()) {
-		case 4:
-			setConnectionX(this.xCoord + 0.5D);
-			setConnectionY(this.yCoord + d);
-			setConnectionZ(this.zCoord + 1D - f);
-			break;
-		case 5:
-			setConnectionX(this.xCoord + 0.5D);
-			setConnectionY(this.yCoord + d);
-			setConnectionZ(this.zCoord + f);
-			break;
-		case 2:
-			setConnectionX(this.xCoord + 1D - f);
-			setConnectionY(this.yCoord + d);
-			setConnectionZ(this.zCoord + 0.5D);
-			break;
-		case 3:
-			setConnectionX(this.xCoord + f);
-			setConnectionY(this.yCoord + d);
-			setConnectionZ(this.zCoord + 0.5D);
-			break;
-		default:
-			setConnectionX(this.xCoord + 1D - f);
-			setConnectionY(this.yCoord + d);
-			setConnectionZ(this.zCoord + 0.5D);
-			break;
-
-		}
-		if (!nodeList.isEmpty()) {
-			Iterator<NodeEntity> ei = nodeList.iterator();
-			while (ei.hasNext()) {
-				NodeEntity ne = ei.next();
-				if ((ne.prevAnchorEntity == null || ne.nextAnchorEntity == null)
-						&& this.cableListContains(ne.getChainUniqueID())) {
-					ne.setVirtualNodePos(connectionX, connectionY, connectionZ);
-				}
-			}
-		}
-		if (IC2.platform.isSimulating() && !this.addedToEnergyNet) {
-			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-			this.addedToEnergyNet = true;
-		}
 	}
+
 
 	@Override
 	public double getDemandedEnergy() {
@@ -182,10 +134,7 @@ public abstract class BasicElectricMotorTileEntity extends FlexibleCableHolderBa
 			double amount = this.dischargeSlot.discharge(this.getDemandedEnergy(), false);
 			this.energy += amount;
 		}
-		if (this.gridID != -1 && this.getGrid().energy > 0D && this.energy < this.getMaxStorage()) {
-			this.energy += energyConsume * 10D;
-			this.getGrid().drawEnergy(energyConsume * 10D, this);
-		}
+
 		if (this.canOperate() && this.energy >= this.energyConsume) {
 			this.energy -= this.energyConsume * this.upgradeSlot.getPowerConsumtionMultiplier();
 			if (this.progress == 0) {
@@ -245,23 +194,10 @@ public abstract class BasicElectricMotorTileEntity extends FlexibleCableHolderBa
 		return true;
 	}
 
-	@Override
-	public double getMaxAllowableVoltage() {
-		return 64000D;
-	}
-
-	@Override
-	public double getEnergyAmountThisNodeWant() {
-		return this.getMaxStorage()-this.energy;
-	}
 
 	public double drawEnergyToGrid(double amount) {
 		return 0d;
 	}
 
-	@Override
-	public void injectEnergyInThisNode(double amount, double voltage) {
-		this.energy += amount;
-	}
 
 }

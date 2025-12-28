@@ -29,7 +29,7 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
 		super();
 		cableList=new HashSet<IHLCable>();
 	}
-	
+
     @Override
 	public void onLoaded()
     {
@@ -40,7 +40,7 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
         	grid.add(this);
         }
     }
-    
+
     @Override
 	public void onUnloaded()
     {
@@ -52,8 +52,8 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
         }
     }
 
-    
-	@SuppressWarnings("unchecked")
+
+	//@SuppressWarnings("unchecked")
 	@Override
 	public void setFacing(short facing1)
 	{
@@ -78,7 +78,7 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
         	}
 		}
 	}
-	
+
 	protected boolean cableListContains(int chainUniqueID) {
 		Iterator<IHLCable> cli = this.getCableList().iterator();
 		while(cli.hasNext())
@@ -91,13 +91,13 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) 
+	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
 	{
 		return this.getFacing()!=(short)side;
 	}
-	
+
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
@@ -129,7 +129,7 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
         this.gridID=nbt.getInteger("gridID");
 		this.checkCables=nbt.getBoolean("checkCables");
 	}
-	
+
 	@Override
 	public void removeAttachedChains()
 	{
@@ -147,15 +147,15 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
 	public void setConnectionZ(double connectionZ) {
 		this.connectionZ = connectionZ;
 	}
-	
+
 	@Override
-	public double[] getPortPos(EntityLivingBase player) 
+	public double[] getPortPos(EntityLivingBase player)
 	{
 		return new double[] {this.connectionX,this.connectionY,this.connectionZ};
 	}
 
 	@Override
-	public boolean addCable(NBTTagCompound cable) 
+	public boolean addCable(NBTTagCompound cable)
 	{
 		return this.cableList.add(IHLCable.fromNBT(cable));
 	}
@@ -164,7 +164,7 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
 	public Set<IHLCable> getCableList() {
 		return cableList;
 	}
-	
+
 	@Override
 	public void setGrid(int newGridID)
 	{
@@ -178,37 +178,37 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
 			this.gridID=-1;
 		}
 	}
-	
+
 	@Override
 	public int getGridID()
 	{
 		return this.gridID;
 	}
-	
+
 	@Override
 	public IHLGrid getGrid()
 	{
 		return IHLMod.enet.getGrid(gridID);
 	}
-	
+
 	@Override
     public boolean shouldRenderInPass(int pass)
     {
         return pass==0;
     }
-	
+
 	@Override
-	public void remove(IHLCable cable) 
+	public void remove(IHLCable cable)
 	{
 		if(this.cableList.remove(cable))
 		{
 			IHLUtils.removeChain(cable, this);
 		}
 	}
-	
+
 
 	@Override
-	public boolean isCableRemoved(int chainUniqueID) 
+	public boolean isCableRemoved(int chainUniqueID)
 	{
 		if(!checkCables)
 		{
@@ -223,13 +223,13 @@ public abstract class FlexibleCableHolderBaseTileEntity extends TileEntityInvent
 		}
 		return true;
 	}
-	
+
 	@Override
-	public void setCableCheck(boolean b) 
+	public void setCableCheck(boolean b)
 	{
 		this.checkCables=b;
 	}
-	
+
 	@Override
 	public boolean isTileEntityBaseInvalid(){
 		return this.tileEntityInvalid;

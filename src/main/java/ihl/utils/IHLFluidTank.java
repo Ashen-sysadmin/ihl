@@ -1,19 +1,12 @@
 package ihl.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import ihl.recipes.IRecipeInputFluid;
 import ihl.worldgen.ores.IHLFluid;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.*;
 
 public class IHLFluidTank implements IFluidTank {
 	private final List<FluidStack> fluidList = new ArrayList<FluidStack>();
@@ -69,7 +62,7 @@ public class IHLFluidTank implements IFluidTank {
 
 	public FluidStack getLightestFluid() {
 		if (this.fluidList.isEmpty()) {
-			return IHLUtils.getFluidStackWithSize("air", this.capacity);
+			return null;
 		}
 		return this.fluidList.get(this.fluidList.size() - 1);
 	}
@@ -148,15 +141,13 @@ public class IHLFluidTank implements IFluidTank {
 	}
 
 
-	public FluidStack drain(Object fluidStack, boolean doDrain) {
+	public FluidStack drain(FluidStack fluidStack, boolean doDrain) {
 		if (fluidList.isEmpty()) {
 			return null;
 		}
 		int drained = 0;
-		if (fluidStack instanceof FluidStack) {
-			drained = ((FluidStack) fluidStack).amount;
-		} else {
-			drained = ((IRecipeInputFluid) fluidStack).getAmount();
+		if (fluidStack != null) {
+			drained = fluidStack.amount;
 		}
 		FluidStack fluid = this.getFluidStackWithSameFluid(fluidStack);
 		if (fluid == null) {
@@ -175,10 +166,51 @@ public class IHLFluidTank implements IFluidTank {
 		return stack;
 	}
 
+	public FluidStack drain(IRecipeInputFluid fluidStack, boolean doDrain) {
+		if (fluidList.isEmpty()) {
+			return null;
+		}
+		int drained = 0;
+		if (fluidStack != null) {
+			drained = fluidStack.getAmount();
+		}
+		FluidStack fluid = this.getFluidStackWithSameFluid(fluidStack);
+		if (fluid == null) {
+			return null;
+		}
+		if (fluid.amount < drained) {
+			drained = fluid.amount;
+		}
+		FluidStack stack = copyWithSize(fluid, drained);
+		if (doDrain) {
+			fluid.amount -= drained;
+			if (fluid.amount <= 0) {
+				this.fluidList.remove(fluid);
+			}
+		}
+		return stack;
+	}
+
+	public void drainStacks(List<FluidStack> fluidInputs, boolean doDrain){
+		if (fluidInputs == null || fluidInputs.isEmpty()) return;
+		for (FluidStack fluidInput : fluidInputs) {
+			this.drain(fluidInput, doDrain);
+		}
+	}
+
+	/**
+	* @deprecated Reason: If I see another "Object fluidStack" there will be consequences
+	 */
+	@Deprecated
 	public void drain(List<?> fluidInputs, boolean doDrain) {
-		if (fluidInputs != null && !fluidInputs.isEmpty()) {
-			for (Object fluidInput : fluidInputs) {
-				this.drain(fluidInput, doDrain);
+		if (fluidInputs == null || fluidInputs.isEmpty()) return;
+
+		for (Object fluidInput : fluidInputs) {
+			if (fluidInput instanceof FluidStack) {
+				this.drain((FluidStack) fluidInput, doDrain);
+			}
+			else if  (fluidInput instanceof IRecipeInputFluid) {
+				this.drain((IRecipeInputFluid) fluidInput, doDrain);
 			}
 		}
 	}
@@ -205,18 +237,51 @@ public class IHLFluidTank implements IFluidTank {
 		return stack;
 	}
 
+	/**
+	 * Not at all safe to use during iteration, even though it's really tempting.
+	* @return Returns the fluidstack drained, as standard for forge fluid API.
+	 */
+	public FluidStack drainByIndex(int amount, int index, boolean doDrain){
+		int tankIndexAmount = this.getFluidAmount(index); //OOB returns 0.
+		int amountDrained = Math.min(tankIndexAmount,amount);
+		if (amountDrained <= 0) return null;
+		//Everything is now not Null as a byproduct of the above ^
 
-	public FluidStack getFluidStackWithSameFluid(Object fluidStack) {
+		FluidStack stack = new FluidStack(this.getFluidFromIndex(index), amountDrained);
+		if (doDrain) {
+			if (amountDrained == tankIndexAmount){
+				this.fluidList.remove(index);
+			} else {
+				this.setFluidAmount((tankIndexAmount-amountDrained), index);
+			}
+		}
+		return stack;
+	}
+
+	/**
+	 * @param fluidStack the fluid stack to compare to.
+	 * @return mutable fluidstack inside the tank, returns null if no match found
+	 */
+	public FluidStack getFluidStackWithSameFluid(FluidStack fluidStack) {
 		for (FluidStack fluid : fluidList) {
-			if (fluid != null) {
-				if (fluidStack instanceof FluidStack) {
-					if (fluid.isFluidEqual((FluidStack) fluidStack)) {
-						return fluid;
-					}
-				} else {
-					if (((IRecipeInputFluid) fluidStack).matches(fluid)) {
-						return fluid;
-					}
+			if (fluid != null && fluidStack != null) {
+				if (fluid.isFluidEqual(fluidStack)) {
+					return fluid;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param fluidStack the IRecipeInputFluid stack to compare to.
+	 * @return mutable fluidstack inside the tank, returns null if no match found
+	 */
+	public FluidStack getFluidStackWithSameFluid(IRecipeInputFluid fluidStack) {
+		for (FluidStack fluid : fluidList) {
+			if (fluid != null && fluidStack != null) {
+				if (fluidStack.matches(fluid)) {
+					return fluid;
 				}
 			}
 		}
@@ -227,13 +292,14 @@ public class IHLFluidTank implements IFluidTank {
 		return this.fluidList.size();
 	}
 
-	public void setFluidAmount(int amount1, int index) {
-		if (this.fluidList.size() <= index) {
-			while (this.fluidList.size() <= index) {
-				this.fluidList.add(new FluidStack(FluidRegistry.WATER, 1));
-			}
+
+
+	private boolean setFluidAmount(int amount1, int index) {
+		if (index < 0 || this.fluidList.size() <= index) {
+			return false;
 		}
 		this.fluidList.get(index).amount = amount1;
+		return true;
 	}
 
 	public int getFluidAmount(int index) {
@@ -243,6 +309,17 @@ public class IHLFluidTank implements IFluidTank {
 		return this.fluidList.get(index).amount;
 	}
 
+	public Fluid getFluidFromIndex(int index) {
+		if (this.fluidList.size() <= index || this.fluidList.get(index) == null) {
+			return null;
+		}
+		return this.fluidList.get(index).getFluid();
+	}
+
+	/**
+	 * @deprecated Not only are fluid IDs deprecated by forge, but this is horrible
+	 */
+	@Deprecated
 	public int getFluidID(int i) {
 		if (this.fluidList.get(i) == null) {
 			return -1;
@@ -288,13 +365,21 @@ public class IHLFluidTank implements IFluidTank {
 		this.fluidList.clear();
 	}
 
+	/**
+	* @deprecated *please* don't use getters to bypass access controls - make something public if you want to allow public getters.
+	 */
+	@Deprecated
 	public List<FluidStack> getFluidList() {
 		return this.fluidList;
 	}
 
-
-
-
+	/**
+	 * Still horrifically unsafe, but actually useful for something.
+	 * @return Returns an Iterator<FluidStack>
+	 */
+	public Iterator<FluidStack> getFluidIterator() {
+		return this.fluidList.iterator();
+	}
 
 	private FluidStack copyWithSize(FluidStack resource, int amount1) {
 		FluidStack fluid = resource.copy();
@@ -304,8 +389,6 @@ public class IHLFluidTank implements IFluidTank {
 		}
 		return fluid;
 	}
-
-
 
 	public void checkCorrectState() {
 		if (!this.fluidList.isEmpty()) {

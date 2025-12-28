@@ -137,10 +137,6 @@ public class CryogenicDistillerTileEntity extends BasicElectricMotorTileEntity i
 	}
 
 	@Override
-	public void onGuiClosed(EntityPlayer arg0) {
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		this.fluidTankInput.readFromNBT(nbttagcompound.getCompoundTag("fluidTankInput"));
@@ -220,10 +216,8 @@ public class CryogenicDistillerTileEntity extends BasicElectricMotorTileEntity i
 
 	@Override
 	public void onNetworkEvent(EntityPlayer player, int event) {
-		switch (event) {
-		case 0:
+		if (event == 0) {
 			this.fluidTankProducts.setEmpty();
-			break;
 		}
 	}
 

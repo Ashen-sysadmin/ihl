@@ -14,6 +14,7 @@ import ihl.flexible_cable.AnchorBlock;
 import ihl.flexible_cable.AnchorTileEntity;
 import ihl.handpump.AdvancedHandPump;
 import ihl.handpump.IHLHandPump;
+import ihl.items_blocks.machines.DosingPumpBlock;
 import ihl.processing.chemistry.*;
 import ihl.processing.metallurgy.Crucible;
 import ihl.processing.metallurgy.ElectricEngineItem;
@@ -81,6 +82,7 @@ public class BlocksAndItems {
 		IHLTool.init();
 		MirrorBlock.init();
 		MachineBaseBlock.init();// other things must be first
+		DosingPumpBlock.init();
 
 		GameRegistry.registerBlock(ds, "debugScanner");
 		GameRegistry.registerTileEntity(DebugScannerTileEntity.class, "DebugScanner");
