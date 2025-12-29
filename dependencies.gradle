@@ -37,13 +37,13 @@ dependencies {
 	runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.6.34-GTNH:dev")
 
 
-	compileOnly 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:src'
+	compileOnly 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev'
 	api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
-	compileOnly 'codechicken:CodeChickenLib:1.7.10-1.1.3.140:src'
+	compileOnly 'codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev'
 
 
-	compileOnly 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:src'
+	compileOnly 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:dev'
 
 	compileOnly 'com.gregoriust.gregtech:gregtech_1.7.10:6.17.05:dev'
 }
